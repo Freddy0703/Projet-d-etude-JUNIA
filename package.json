@@ -17,5 +17,11 @@
     "url": "https://github.com/Freddy0703/Projet-d-etude-JUNIA/issues"
   },
   "homepage": "https://github.com/Freddy0703/Projet-d-etude-JUNIA#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "mysql2": "^3.17.4"
+  }
 }
