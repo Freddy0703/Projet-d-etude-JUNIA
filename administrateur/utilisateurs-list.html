@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Utilisateurs · Hôpital Moulaye Abdellah</title>
+  
+  <!-- Bootstrap 5 + Icons + Google Fonts + DataTables (pour le look, sans backend) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f4f8ff;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    /* ===== CONTENEUR PRINCIPAL ===== */
+    .users-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* ===== EN-TÊTE AVEC NOM DE L'HÔPITAL ===== */
+    .hospital-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      gap: 1.5rem;
+    }
+
+    .brand h1 {
+      font-weight: 800;
+      font-size: 2.2rem;
+      color: #0b2f5c;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.2rem;
+    }
+
+    .brand h1 span {
+      background: linear-gradient(135deg, #1e4b8a, #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand .subtitle {
+      color: #4a6085;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-premium-outline {
+      background: white;
+      border: 1.5px solid #dae3f2;
+      border-radius: 50px;
+      padding: 0.7rem 1.8rem;
+      font-weight: 600;
+      color: #1e3f78;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+      box-shadow: 0 5px 15px rgba(0,30,70,0.05);
+    }
+
+    .btn-premium-outline:hover {
+      background: #f0f7ff;
+      border-color: #2563eb;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 22px -8px #1e3a8a30;
+    }
+
+    .btn-premium-primary {
+      background: linear-gradient(145deg, #1e3f78, #153a6b);
+      border: none;
+      border-radius: 50px;
+      padding: 0.7rem 1.8rem;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 12px 22px -8px #0b2a4e;
+      transition: all 0.2s;
+    }
+
+    .btn-premium-primary:hover {
+      background: linear-gradient(145deg, #153568, #0e2a52);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 28px -8px #0b1f38;
+      color: white;
+    }
+
+    /* ===== CARTE PRINCIPALE ===== */
+    .users-card {
+      background: white;
+      border-radius: 42px;
+      padding: 2.2rem 2rem;
+      box-shadow: 0 30px 60px -25px rgba(8, 30, 70, 0.4);
+      border: 1px solid rgba(255,255,255,0.8);
+      backdrop-filter: blur(2px);
+    }
+
+    .card-header-custom {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      gap: 1.5rem;
+    }
+
+    .card-header-custom h2 {
+      font-weight: 700;
+      color: #142b50;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 0;
+    }
+
+    .card-header-custom h2 i {
+      background: #e7f0ff;
+      padding: 14px;
+      border-radius: 30px;
+      color: #2563eb;
+      font-size: 1.8rem;
+    }
+
+    .user-count-badge {
+      background: #e2ebfa;
+      color: #1e4b8a;
+      border-radius: 60px;
+      padding: 0.4rem 1.2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ===== FILTRES RECHERCHE ===== */
+    .filters-section {
+      background: #f9fcff;
+      border-radius: 60px;
+      padding: 0.8rem 1.5rem;
+      margin-bottom: 2.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      align-items: center;
+      border: 1px solid #e2ecfd;
+    }
+
+    .search-wrapper {
+      flex: 2;
+      min-width: 260px;
+      position: relative;
+    }
+
+    .search-wrapper i {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7991b9;
+      font-size: 1.2rem;
+    }
+
+    .search-wrapper input {
+      width: 100%;
+      height: 54px;
+      border: none;
+      background: transparent;
+      padding-left: 52px;
+      font-size: 1rem;
+      border-radius: 50px;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .search-wrapper input:focus {
+      outline: none;
+      border-color: #2563eb;
+      background: white;
+      box-shadow: 0 0 0 5px #2563eb20;
+    }
+
+    .filter-wrapper {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+
+    .filter-wrapper i {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7991b9;
+      font-size: 1.2rem;
+      z-index: 10;
+    }
+
+    .filter-wrapper select {
+      width: 100%;
+      height: 54px;
+      border: none;
+      background: white;
+      padding-left: 52px;
+      border-radius: 50px;
+      font-weight: 500;
+      color: #1e3a5f;
+      border: 2px solid #e2ecfd;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%234a6085' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: calc(100% - 20px) center;
+    }
+
+    .filter-wrapper select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 5px #2563eb20;
+    }
+
+    .reset-filters {
+      background: #eff4ff;
+      border: none;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1e4b8a;
+      font-size: 1.3rem;
+      transition: all 0.2s;
+    }
+
+    .reset-filters:hover {
+      background: #2563eb;
+      color: white;
+      transform: rotate(30deg);
+      cursor: pointer;
+    }
+
+    /* ===== TABLEAU MODERNE ===== */
+    .table-responsive {
+      border-radius: 28px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .table-modern {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: white;
+    }
+
+    .table-modern thead {
+      background: #f0f5fe;
+    }
+
+    .table-modern th {
+      padding: 1.4rem 1.2rem;
+      font-weight: 700;
+      color: #1c3f6e;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #d1dff5;
+    }
+
+    .table-modern td {
+      padding: 1.2rem 1.2rem;
+      vertical-align: middle;
+      color: #253652;
+      font-weight: 500;
+      border-bottom: 1px solid #edf2fa;
+    }
+
+    .table-modern tbody tr {
+      transition: all 0.2s;
+    }
+
+    .table-modern tbody tr:hover {
+      background: #f5faff;
+      transform: scale(1.002);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+    }
+
+    .user-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid white;
+      box-shadow: 0 8px 18px -6px #1e3a8a60;
+      transition: transform 0.2s;
+    }
+
+    .user-avatar:hover {
+      transform: scale(1.1);
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 0.4rem 1.2rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .role-badge.administrateur {
+      background: #1e2f5a;
+      color: white;
+    }
+
+    .role-badge.medecin {
+      background: #d2f0e4;
+      color: #0b5e4b;
+    }
+
+    .role-badge.secretaire {
+      background: #fff2df;
+      color: #b45b0a;
+    }
+
+    /* ===== PIED DE TABLE ===== */
+    .table-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.8rem;
+    }
+
+    .results-info {
+      background: #e6f0ff;
+      padding: 0.4rem 1.4rem;
+      border-radius: 50px;
+      font-weight: 500;
+      color: #1b4a7a;
+    }
+
+    .btn-navigation {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      color: #bacfea;
+    }
+
+    .empty-state p {
+      font-size: 1.2rem;
+      color: #5f739b;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="users-container">
+    <!-- En-tête avec nom de l'hôpital et boutons (en haut) -->
+    <div class="hospital-header">
+      <div class="brand">
+        <h1>Hôpital <span>Moulaye Abdellah</span></h1>
+        <div class="subtitle">
+          <i class="bi bi-people-fill"></i> Gestion des utilisateurs
+        </div>
+      </div>
+      <div class="action-buttons">
+        <a href="/administrateur/utilisateurs" class="btn-premium-outline">
+          <i class="bi bi-person-plus"></i> Nouvel utilisateur
+        </a>
+        <a href="/administrateur/dashboard" class="btn-premium-primary">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+      </div>
+    </div>
+
+    <!-- Carte principale -->
+    <div class="users-card">
+      <div class="card-header-custom">
+        <h2>
+          <i class="bi bi-grid-3x3-gap-fill"></i> Liste des utilisateurs
+        </h2>
+        <span class="user-count-badge" id="userCount">
+          <i class="bi bi-person"></i> <span id="countDisplay">0</span> inscrits
+        </span>
+      </div>
+
+      <!-- Section filtres (barre de recherche et filtre rôles) -->
+      <div class="filters-section">
+        <div class="search-wrapper">
+          <i class="bi bi-search"></i>
+          <input type="text" id="searchInput" placeholder="Rechercher par nom, prénom ou email...">
+        </div>
+        <div class="filter-wrapper">
+          <i class="bi bi-funnel"></i>
+          <select id="roleFilter">
+            <option value="">Tous les rôles</option>
+            <option value="Administrateur">Administrateur</option>
+            <option value="Secretaire">Secrétaire</option>
+            <option value="Medecin">Médecin</option>
+          </select>
+        </div>
+        <div class="reset-filters" id="resetFilters" title="Réinitialiser les filtres">
+          <i class="bi bi-arrow-repeat"></i>
+        </div>
+      </div>
+
+      <!-- Tableau des utilisateurs (responsive) -->
+      <div class="table-responsive">
+        <table class="table-modern">
+          <thead>
+            <tr>
+              <th>Photo</th>
+              <th>Prénom</th>
+              <th>Nom</th>
+              <th>Email / Login</th>
+              <th>Rôle</th>
+            </tr>
+          </thead>
+          <tbody id="usersTable">
+            <!-- Les données seront injectées ici par JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer avec stats et navigation -->
+      <div class="table-footer">
+        <div class="results-info" id="resultsInfo">
+          <i class="bi bi-check-circle me-1"></i> <span id="resultsCount">0</span> utilisateur(s) affiché(s)
+        </div>
+        <div class="btn-navigation">
+          <a href="/administrateur/utilisateurs" class="btn-premium-outline">
+            <i class="bi bi-arrow-left"></i> Formulaire d'inscription
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ========== CODE BACKEND STRICTEMENT IDENTIQUE ==========
+    // Les noms de variables, l'API, les IDs sont inchangés.
+    // Seule la présentation a été refaite.
+    
+    let allUsers = [];
+
+    // Charger les utilisateurs depuis l'API (inchangé)
+    fetch('/api/admin/users')
+      .then(res => res.json())
+      .then(data => {
+        allUsers = data;
+        document.getElementById('countDisplay').innerText = allUsers.length;
+        renderTable(allUsers);
+      })
+      .catch(err => {
+        console.warn('Erreur backend (non modifiée) : ', err);
+        document.getElementById('usersTable').innerHTML = `
+          <tr>
+            <td colspan="5" class="empty-state">
+              <i class="bi bi-exclamation-triangle"></i>
+              <p>Impossible de charger les utilisateurs</p>
+            </td>
+          </tr>
+        `;
+      });
+
+    // Fonction pour afficher le tableau filtré (inchangée dans la logique, mais présentation améliorée)
+    function renderTable(users) {
+      const table = document.getElementById('usersTable');
+      const resultsCount = document.getElementById('resultsCount');
+      
+      if (!users || users.length === 0) {
+        table.innerHTML = `
+          <tr>
+            <td colspan="5" class="empty-state">
+              <i class="bi bi-inbox"></i>
+              <p>Aucun utilisateur trouvé</p>
+            </td>
+          </tr>
+        `;
+        resultsCount.innerText = '0';
+        return;
+      }
+
+      table.innerHTML = '';
+      users.forEach(u => {
+        // Déterminer la classe du badge selon le rôle
+        let roleClass = '';
+        if (u.role === 'Administrateur') roleClass = 'administrateur';
+        else if (u.role === 'Medecin') roleClass = 'medecin';
+        else if (u.role === 'Secretaire') roleClass = 'secretaire';
+        
+        // Gestion de la photo (inchangée)
+        const photoSrc = u.photoProfil ? `/images/${u.photoProfil}` : '/images/default.png';
+        
+        table.innerHTML += `
+          <tr>
+            <td>
+              <img src="${photoSrc}" alt="${u.prenom} ${u.nom}" class="user-avatar">
+            </td>
+            <td><strong>${u.prenom || ''}</strong></td>
+            <td>${u.nom || ''}</td>
+            <td>
+              <i class="bi bi-envelope me-1 text-secondary"></i>${u.login || ''}
+            </td>
+            <td>
+              <span class="role-badge ${roleClass}">${u.role || ''}</span>
+            </td>
+          </tr>
+        `;
+      });
+      
+      resultsCount.innerText = users.length;
+    }
+
+    // Filtrage par recherche et rôle (logique inchangée)
+    function applyFilters() {
+      const searchValue = document.getElementById('searchInput').value.toLowerCase().trim();
+      const roleValue = document.getElementById('roleFilter').value;
+
+      const filtered = allUsers.filter(u => {
+        const fullName = ((u.prenom || '') + ' ' + (u.nom || '')).toLowerCase();
+        const email = (u.login || '').toLowerCase();
+        // Recherche sur nom complet ou email
+        const matchesName = fullName.includes(searchValue) || email.includes(searchValue);
+        const matchesRole = roleValue ? u.role === roleValue : true;
+        return matchesName && matchesRole;
+      });
+
+      renderTable(filtered);
+    }
+
+    // Événements (inchangés)
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('roleFilter').addEventListener('change', applyFilters);
+    
+    // Réinitialisation des filtres
+    document.getElementById('resetFilters').addEventListener('click', function() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('roleFilter').value = '';
+      renderTable(allUsers);
+    });
+  </script>
+</body>
+</html>

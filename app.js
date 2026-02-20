@@ -83,6 +83,23 @@ app.get('/administrateur/parametres', isAuthenticated, (req, res) => {
   }
 });
 
+app.get('/administrateur/utilisateurs', isAuthenticated, (req, res) => {
+  if (req.session.user.role === 'Administrateur') {
+    res.sendFile(path.join(__dirname, 'administrateur/utilisateurs.html'));
+  } else {
+    res.redirect('/connexion');
+  }
+});
+
+app.get('/administrateur/utilisateurs-list', isAuthenticated, (req, res) => {
+  if (req.session.user.role === 'Administrateur') {
+    res.sendFile(path.join(__dirname, 'administrateur/utilisateurs-list.html'));
+  } else {
+    res.redirect('/connexion');
+  }
+});
+
+
 app.listen(PORT, () => {
     console.log(`Serveur démarré sur http://localhost:${PORT}`);
 });

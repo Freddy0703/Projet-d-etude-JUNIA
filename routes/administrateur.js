@@ -108,5 +108,36 @@ module.exports = (db) => {
     }
   });
 
+    // Ajouter un utilisateur
+  router.post('/api/admin/add-user', upload.single('photoProfil'), async (req, res) => {
+    try {
+      const { prenom, nom, login, password, role } = req.body;
+      const photoProfil = req.file ? req.file.filename : 'default.png';
+
+      const hashed = await bcrypt.hash(password, 10);
+
+      await db.query(
+        "INSERT INTO Utilisateur (prenom, nom, login, password, role, photoProfil) VALUES (?, ?, ?, ?, ?, ?)",
+        [prenom, nom, login, hashed, role, photoProfil]
+      );
+
+      res.redirect('/administrateur/utilisateurs');
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Erreur serveur");
+    }
+  });
+
+  // Récupérer tous les utilisateurs
+  router.get('/api/admin/users', async (req, res) => {
+    try {
+      const [rows] = await db.query("SELECT prenom, nom, login, role, photoProfil FROM Utilisateur");
+      res.json(rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Erreur serveur");
+    }
+  });
+
   return router;
 };

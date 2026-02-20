@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Inscription · Hôpital Moulaye Abdellah</title>
+  
+  <!-- Bootstrap 5 + Icons + Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f0f5fd 0%, #e8f0fc 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    /* ===== CARTE PRINCIPALE ===== */
+    .registration-wrapper {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .brand-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .brand-header h1 {
+      font-weight: 800;
+      font-size: 2.5rem;
+      color: #0b2f5c;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .brand-header h1 span {
+      background: linear-gradient(135deg, #1e4b8a, #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-header .slogan {
+      color: #4a6085;
+      font-weight: 500;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .brand-header .slogan i {
+      color: #2563eb;
+      background: white;
+      padding: 5px;
+      border-radius: 50%;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.05);
+    }
+
+    /* ===== BARRE D'ACTIONS (boutons en haut) ===== */
+    .action-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      gap: 15px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-outline-premium {
+      background: white;
+      border: 1.5px solid #d4e0f0;
+      color: #1e3f78;
+      border-radius: 50px;
+      padding: 0.6rem 1.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      text-decoration: none;
+      box-shadow: 0 5px 12px rgba(0, 40, 80, 0.05);
+    }
+
+    .btn-outline-premium:hover {
+      background: #f5f9ff;
+      border-color: #2563eb;
+      color: #14325c;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(30, 60, 140, 0.15);
+    }
+
+    .btn-outline-premium i {
+      font-size: 1.2rem;
+    }
+
+    .btn-primary-premium {
+      background: linear-gradient(145deg, #1e3f78, #153a6b);
+      border: none;
+      color: white;
+      border-radius: 50px;
+      padding: 0.7rem 2rem;
+      font-weight: 600;
+      box-shadow: 0 12px 22px -8px #0b2a4e;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary-premium:hover {
+      background: linear-gradient(145deg, #153568, #0e2a52);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 28px -8px #0b1f38;
+      color: white;
+    }
+
+    /* ===== CARTE D'INSCRIPTION ===== */
+    .registration-card {
+      background: white;
+      border-radius: 42px;
+      padding: 2.5rem;
+      box-shadow: 0 30px 60px -20px rgba(8, 30, 70, 0.3);
+      border: 1px solid rgba(255,255,255,0.7);
+      backdrop-filter: blur(4px);
+    }
+
+    .card-header-icon {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 2.2rem;
+      border-bottom: 2px solid #eef2f8;
+      padding-bottom: 1.2rem;
+    }
+
+    .card-header-icon .icon-circle {
+      background: #e3ebff;
+      padding: 15px;
+      border-radius: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-header-icon .icon-circle i {
+      font-size: 2.2rem;
+      color: #1e4b8a;
+    }
+
+    .card-header-icon h2 {
+      font-weight: 700;
+      color: #142b50;
+      margin: 0;
+      font-size: 1.9rem;
+    }
+
+    .card-header-icon p {
+      color: #5c6f92;
+      margin: 0.2rem 0 0;
+      font-size: 0.95rem;
+    }
+
+    /* ===== FORMULAIRES STYLISÉS ===== */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem 1.8rem;
+    }
+
+    @media (max-width: 700px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group-full {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 700px) {
+      .form-group-full {
+        grid-column: span 1;
+      }
+    }
+
+    .form-label-custom {
+      font-weight: 600;
+      color: #1c3e64;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .form-label-custom i {
+      color: #2563eb;
+      font-size: 1rem;
+    }
+
+    .input-icon-wrapper {
+      position: relative;
+    }
+
+    .input-icon-wrapper i {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7a8faf;
+      font-size: 1.25rem;
+      z-index: 10;
+    }
+
+    .input-icon-wrapper .form-control, 
+    .input-icon-wrapper .form-select {
+      padding-left: 52px;
+      height: 58px;
+      border-radius: 24px;
+      border: 2px solid #e7eefc;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: all 0.2s;
+      background-color: #fbfdff;
+    }
+
+    .input-icon-wrapper .form-control:focus, 
+    .input-icon-wrapper .form-select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.15);
+      background-color: white;
+    }
+
+    .file-upload-area {
+      border: 2px dashed #b8cef0;
+      background: #f8fbff;
+      border-radius: 30px;
+      padding: 1.2rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .file-upload-area:hover {
+      background: #ecf3fe;
+      border-color: #2563eb;
+    }
+
+    .file-upload-area i {
+      font-size: 2rem;
+      color: #2c5bb3;
+    }
+
+    .file-upload-text {
+      font-weight: 500;
+      color: #294f86;
+    }
+
+    .file-upload-text small {
+      display: block;
+      color: #7f96b9;
+      font-size: 0.8rem;
+    }
+
+    /* ===== BOUTON DE SOUMISSION ===== */
+    .submit-area {
+      margin-top: 2.2rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-create {
+      background: #0e4b4b;
+      background: linear-gradient(145deg, #0f5c5c, #0b4949);
+      border: none;
+      border-radius: 60px;
+      padding: 0.9rem 2.8rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      box-shadow: 0 15px 25px -8px #0a3b3b;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-create:hover {
+      background: #0d6b6b;
+      background: linear-gradient(145deg, #0f6b6b, #0b5353);
+      transform: translateY(-4px);
+      box-shadow: 0 22px 30px -10px #094545;
+    }
+
+    /* ===== PETITS DÉTAILS ===== */
+    .role-hint {
+      background: #edf3ff;
+      border-radius: 16px;
+      padding: 0.6rem 1.2rem;
+      margin-top: 0.8rem;
+      font-size: 0.9rem;
+      color: #1f4885;
+    }
+
+    .role-hint i {
+      margin-right: 8px;
+    }
+
+    hr {
+      opacity: 0.3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="registration-wrapper">
+    <!-- En-tête avec nom de l'hôpital -->
+    <div class="brand-header">
+      <h1>Hôpital <span>Moulaye Abdellah</span></h1>
+      <div class="slogan">
+        <i class="bi bi-shield-plus"></i>
+        <span>Espace administrateur · inscription utilisateur</span>
+      </div>
+    </div>
+
+    <!-- Boutons en haut (comme demandé, sauf "Créer utilisateur") -->
+    <div class="action-bar">
+      <div class="action-buttons">
+        <a href="/administrateur/utilisateurs-list" class="btn-outline-premium">
+          <i class="bi bi-people-fill"></i> Voir tous les utilisateurs
+        </a>
+        <a href="/administrateur/dashboard" class="btn-outline-premium">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+      </div>
+      <!-- Petit espace réservé pour un éventuel lien, mais on laisse vide à droite pour garder l'équilibre -->
+      <span></span>
+    </div>
+
+    <!-- Carte d'inscription -->
+    <div class="registration-card">
+      <div class="card-header-icon">
+        <div class="icon-circle">
+          <i class="bi bi-person-plus-fill"></i>
+        </div>
+        <div>
+          <h2>Nouvel utilisateur</h2>
+          <p><i class="bi bi-info-circle me-1"></i> Les champs marqués d'un * sont obligatoires</p>
+        </div>
+      </div>
+
+      <!-- Formulaire (back-end strictement identique : action, method, name) -->
+      <form action="/api/admin/add-user" method="POST" enctype="multipart/form-data">
+        <div class="form-grid">
+          <!-- Prénom -->
+          <div>
+            <label class="form-label-custom"><i class="bi bi-person"></i> Prénom *</label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-person-badge"></i>
+              <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Jean" required>
+            </div>
+          </div>
+          <!-- Nom -->
+          <div>
+            <label class="form-label-custom"><i class="bi bi-person"></i> Nom *</label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-person-badge"></i>
+              <input type="text" class="form-control" id="nom" name="nom" placeholder="Dupont" required>
+            </div>
+          </div>
+          <!-- Email/login -->
+          <div class="form-group-full">
+            <label class="form-label-custom"><i class="bi bi-envelope"></i> Email / Login *</label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-at"></i>
+              <input type="email" class="form-control" id="login" name="login" placeholder="contact@hopital.com" required>
+            </div>
+          </div>
+          <!-- Mot de passe -->
+          <div class="form-group-full">
+            <label class="form-label-custom"><i class="bi bi-lock"></i> Mot de passe *</label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-key"></i>
+              <input type="password" class="form-control" id="password" name="password" placeholder="•••••••• (min. 8 caractères)" required>
+            </div>
+          </div>
+          <!-- Rôle (select) -->
+          <div>
+            <label class="form-label-custom"><i class="bi bi-tags"></i> Rôle *</label>
+            <div class="input-icon-wrapper">
+              <i class="bi bi-person-workspace"></i>
+              <select class="form-select" id="role" name="role" required>
+                <option value="Secretaire">Secrétaire</option>
+                <option value="Medecin">Médecin</option>
+              </select>
+            </div>
+            <div class="role-hint">
+              <i class="bi bi-info-circle"></i> Le rôle définit les permissions dans l'application
+            </div>
+          </div>
+          <!-- Photo de profil (file) -->
+          <div>
+            <label class="form-label-custom"><i class="bi bi-camera"></i> Photo de profil</label>
+            <div class="file-upload-area" onclick="document.getElementById('photoProfil').click();">
+              <i class="bi bi-cloud-arrow-up"></i>
+              <div class="file-upload-text">
+                Choisir une photo
+                <small>PNG, JPG ou GIF (max 5 Mo)</small>
+              </div>
+              <input type="file" class="d-none" id="photoProfil" name="photoProfil" accept="image/*">
+            </div>
+          </div>
+        </div>
+
+        <!-- Bouton créer utilisateur (en bas, distinct) -->
+        <div class="submit-area">
+          <button type="submit" class="btn-create">
+            <i class="bi bi-check2-circle"></i> Créer utilisateur
+          </button>
+        </div>
+      </form>
+
+      <!-- Ligne de rappel discrète -->
+      <hr class="mt-4">
+      <div class="text-muted small text-center">
+        <i class="bi bi-shield-lock me-1"></i> Toutes les données sont protégées et cryptées.
+      </div>
+    </div>
+  </div>
+
+  <!-- Script facultatif pour améliorer l'UX sans toucher au backend -->
+  <script>
+    // Optionnel : afficher le nom du fichier sélectionné (purement cosmétique, ne modifie pas le fonctionnement)
+    document.getElementById('photoProfil')?.addEventListener('change', function(e) {
+      const fileName = e.target.files[0]?.name;
+      const uploadArea = document.querySelector('.file-upload-text');
+      if (fileName && uploadArea) {
+        uploadArea.innerHTML = `📸 ${fileName} <small>Fichier prêt</small>`;
+      }
+    });
+  </script>
+</body>
+</html>
