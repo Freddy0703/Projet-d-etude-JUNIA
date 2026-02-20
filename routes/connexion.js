@@ -4,10 +4,12 @@ const bcrypt = require('bcrypt');
 module.exports = (db) => {
     const router = express.Router();
 
+    // Affichage du formulaire
     router.get('/', (req, res) => {
         res.sendFile('connexion.html', { root: 'public' });
     });
 
+    // Traitement du formulaire
     router.post('/', async (req, res) => {
         const { login, password } = req.body;
 
@@ -19,7 +21,11 @@ module.exports = (db) => {
             }
 
             const user = rows[0];
-            const match = await bcrypt.compare(password, user.password);
+
+            // Correction : transformer $2y$ en $2b$ pour compatibilité NodeJS
+            const hash = user.password.replace(/^\$2y\$/, '$2b$');
+
+            const match = await bcrypt.compare(password, hash);
 
             if (!match) {
                 return res.send("Mot de passe incorrect");

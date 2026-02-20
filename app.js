@@ -6,7 +6,7 @@ const mysql = require('mysql2/promise');
 const app = express();
 const PORT = 3000;
 
-
+// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -27,6 +27,12 @@ const db = mysql.createPool({
 });
 
 
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store');
+    next();
+});
+
+
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
         return next();
@@ -34,12 +40,17 @@ function isAuthenticated(req, res, next) {
     res.redirect('/connexion');
 }
 
-// Import des routes
+
 const connexionRoutes = require('./routes/connexion')(db);
 const deconnexionRoutes = require('./routes/deconnexion');
 
 app.use('/connexion', connexionRoutes);
 app.use('/deconnexion', deconnexionRoutes);
+
+
+app.get('/', (req, res) => {
+    res.redirect('/connexion');
+});
 
 
 app.get('/administrateur/dashboard', isAuthenticated, (req, res) => {
@@ -65,6 +76,9 @@ app.get('/medecin/dashboard', isAuthenticated, (req, res) => {
         res.redirect('/connexion');
     }
 });
+
+const adminRoutes = require('./routes/administrateur')(db);
+app.use('/', adminRoutes);
 
 
 app.listen(PORT, () => {

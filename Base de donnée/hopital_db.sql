@@ -44,7 +44,7 @@ CREATE TABLE Utilisateur (
     photoProfil VARCHAR(255) DEFAULT 'default.png'
 );
 
--- Table Historique Connexions (optionnelle mais utile)
+-- Table Historique Connexions
 CREATE TABLE HistoriqueConnexion (
     idHistorique INT AUTO_INCREMENT PRIMARY KEY,
     idUser INT NOT NULL,
@@ -53,8 +53,8 @@ CREATE TABLE HistoriqueConnexion (
     FOREIGN KEY (idUser) REFERENCES Utilisateur(idUser) ON DELETE CASCADE
 );
 
--- Insertion du premier administrateur
+-- Insertion du premier administrateur avec hash PHP ($2y$)
 INSERT INTO Utilisateur (prenom, nom, login, password, role, statut, photoProfil)
-VALUES ('Pape Ibrahima', 'MBAYE', 'xafjunior04@gmail.com',
-        '$2y$10$iVtsXBfSIceGRjmJhBBkEejDSOVFq0sKvv.FZOVmGyrwU8k/kHYBm',
+VALUES ('', '', '',
+        '$2y$10$1OwQLuhFkoW2oJ6T6k9vi.0Oy6ZVfyipTSaFA8k0bJ.43HMVVuODa', -- mot de passe : hopital123 --
         'Administrateur', 'Hors ligne', 'default.png');

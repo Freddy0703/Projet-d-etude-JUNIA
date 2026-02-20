@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Connexion · Élégance</title>
+    <!-- Bootstrap 5 (light version) + icônes + subtle background -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Font pour une touche raffinée (optionnel, reste très léger) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body {
+            background: linear-gradient(145deg, #f0f4fa 0%, #f8fafc 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 1rem;
+        }
+        .card-glass {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0,0,0,0.02);
+            transition: all 0.2s ease;
+        }
+        .card-glass:hover {
+            box-shadow: 0 30px 60px -10px rgba(0, 20, 40, 0.2);
+        }
+        .form-control, .btn {
+            border-radius: 3rem;
+            padding: 0.85rem 1.5rem;
+            border: 1px solid rgba(0,0,0,0.06);
+            font-size: 1rem;
+        }
+        .form-control {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+        .form-control:focus {
+            background: #ffffff;
+            border-color: #86b9ff;
+            box-shadow: 0 0 0 0.25rem rgba(70, 130, 230, 0.15);
+        }
+        .btn-primary {
+            background: #1d2b3f;
+            border: none;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            padding: 0.9rem;
+            transition: 0.15s;
+        }
+        .btn-primary:hover {
+            background: #14212f;
+            transform: scale(1.01);
+        }
+        .input-group-icon {
+            position: relative;
+        }
+        .input-group-icon i {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #5b687c;
+            font-size: 1.2rem;
+            z-index: 4;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        .input-group-icon .form-control {
+            padding-left: 3rem;
+        }
+        label.form-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #2d3a4f;
+            margin-bottom: 0.4rem;
+            margin-left: 0.6rem;
+        }
+        h2 {
+            font-weight: 600;
+            font-size: 2.2rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(130deg, #1f2a3f, #2f3e5a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.2rem;
+        }
+        /* responsive fine-tuning */
+        @media (max-width: 480px) {
+            .card-glass { padding: 2rem 1.5rem !important; }
+            h2 { font-size: 1.9rem; }
+        }
+        .footer-links {
+            font-size: 0.9rem;
+            color: #4f5f73;
+        }
+        .footer-links a {
+            color: #1d2b3f;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted transparent;
+            transition: border 0.2s;
+        }
+        .footer-links a:hover {
+            border-bottom-color: #1d2b3f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="max-width: 460px;">
+        <div class="card-glass p-4 p-md-5">
+            <!-- en-tête discret mais élégant -->
+            <div class="text-center mb-4">
+                <div class="d-inline-flex bg-white bg-opacity-40 p-3 rounded-5 mb-2 shadow-sm" style="backdrop-filter:blur(4px);">
+                    <i class="bi bi-shield-lock-fill fs-1" style="color:#1e2f47;"></i>
+                </div>
+                <h2 class="mt-2">Bienvenue à l'hopital <b>Moulay Abdellah</b></h2>
+                <p class="text-secondary-emphasis small">Accédez à votre espace sécurisé</p>
+            </div>
+
+            <!-- formulaire strictement identique en attributs : action="/connexion" method="POST" -->
+            <form action="/connexion" method="POST">
+                <!-- Champ email / login -->
+                <div class="mb-4">
+                    <label for="login" class="form-label">
+                        <i class="bi bi-envelope-fill me-1" style="font-size:0.8rem;"></i> Email
+                    </label>
+                    <div class="input-group-icon">
+                        <i class="bi bi-envelope-open"></i>
+                        <input type="text" class="form-control" id="login" name="login" placeholder="votremail@gmail.com" required>
+                    </div>
+                </div>
+
+                <!-- Champ mot de passe -->
+                <div class="mb-4">
+                    <label for="password" class="form-label">
+                        <i class="bi bi-lock-fill me-1"></i> Mot de passe
+                    </label>
+                    <div class="input-group-icon">
+                        <i class="bi bi-key"></i>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <!-- petite option pour garder connexion (purement front) et mot de passe oublié -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="remember" style="border-radius:0.25rem;">
+                        <label class="form-check-label" for="remember" style="font-size:0.9rem;">Rester connecté</label>
+                    </div>
+                </div>
+
+                <!-- bouton de connexion inchangé dans le name/action mais design extra -->
+                <button type="submit" class="btn btn-primary w-100 mb-4">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+                </button>
+            </form>
+        </div>
+
+        <!-- petit crédit design (juste pour le plaisir) -->
+        <p class="text-center text-muted small mt-4 opacity-50" style="font-size:0.75rem;">
+            interface refondue · design réactif
+        </p>
+    </div>
+
+</body>
+</html>
