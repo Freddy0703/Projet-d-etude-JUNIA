@@ -36,8 +36,11 @@ module.exports = (db) => {
                 id: user.idUser,
                 role: user.role,
                 prenom: user.prenom,
-                nom: user.nom
+                nom: user.nom,
+                login: user.login, // email
+                photoProfil: user.photoProfil ? user.photoProfil : 'default.png'
             };
+
 
             // Redirection selon le rôle
             if (user.role === 'Administrateur') {
