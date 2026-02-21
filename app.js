@@ -99,6 +99,22 @@ app.get('/administrateur/utilisateurs-list', isAuthenticated, (req, res) => {
   }
 });
 
+app.get('/administrateur/patients', isAuthenticated, (req, res) => {
+  if (req.session.user.role === 'Administrateur') {
+    res.sendFile(path.join(__dirname, 'administrateur/patients.html'));
+  } else {
+    res.redirect('/connexion');
+  }
+});
+
+app.get('/administrateur/dossiers', isAuthenticated, (req, res) => {
+  if (req.session.user.role === 'Administrateur') {
+    res.sendFile(path.join(__dirname, 'administrateur/dossiers.html'));
+  } else {
+    res.redirect('/connexion');
+  }
+});
+
 
 app.listen(PORT, () => {
     console.log(`Serveur démarré sur http://localhost:${PORT}`);

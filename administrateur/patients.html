@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Patients · Hôpital Moulaye Abdellah</title>
+  
+  <!-- Bootstrap 5 + Icons + Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f5f9ff;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    /* ===== CONTENEUR PRINCIPAL ===== */
+    .patients-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* ===== EN-TÊTE AVEC NOM DE L'HÔPITAL ===== */
+    .hospital-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      gap: 1.5rem;
+    }
+
+    .brand h1 {
+      font-weight: 800;
+      font-size: 2.2rem;
+      color: #0b2f5c;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.2rem;
+    }
+
+    .brand h1 span {
+      background: linear-gradient(135deg, #1e4b8a, #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand .subtitle {
+      color: #4a6085;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-premium-primary {
+      background: linear-gradient(145deg, #1e3f78, #153a6b);
+      border: none;
+      border-radius: 50px;
+      padding: 0.7rem 1.8rem;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 12px 22px -8px #0b2a4e;
+      transition: all 0.2s;
+    }
+
+    .btn-premium-primary:hover {
+      background: linear-gradient(145deg, #153568, #0e2a52);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 28px -8px #0b1f38;
+      color: white;
+    }
+
+    /* ===== CARTE PRINCIPALE ===== */
+    .patients-card {
+      background: white;
+      border-radius: 42px;
+      padding: 2.2rem 2rem;
+      box-shadow: 0 30px 60px -25px rgba(8, 30, 70, 0.4);
+      border: 1px solid rgba(255,255,255,0.8);
+      backdrop-filter: blur(2px);
+    }
+
+    .card-header-custom {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      gap: 1.5rem;
+    }
+
+    .card-header-custom h2 {
+      font-weight: 700;
+      color: #142b50;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 0;
+    }
+
+    .card-header-custom h2 i {
+      background: #e7f0ff;
+      padding: 14px;
+      border-radius: 30px;
+      color: #2563eb;
+      font-size: 1.8rem;
+    }
+
+    .patient-count-badge {
+      background: #e2ebfa;
+      color: #1e4b8a;
+      border-radius: 60px;
+      padding: 0.4rem 1.2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ===== FILTRES AVANCÉS ===== */
+    .filters-section {
+      background: #f9fcff;
+      border-radius: 60px;
+      padding: 1rem 1.8rem;
+      margin-bottom: 2.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      border: 1px solid #e2ecfd;
+    }
+
+    .filter-item {
+      flex: 1 1 200px;
+      position: relative;
+    }
+
+    .filter-item i {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7991b9;
+      font-size: 1.2rem;
+      z-index: 10;
+    }
+
+    .filter-item input,
+    .filter-item select {
+      width: 100%;
+      height: 52px;
+      border: 2px solid transparent;
+      background: white;
+      padding-left: 48px;
+      border-radius: 40px;
+      font-weight: 500;
+      color: #1e3a5f;
+      transition: all 0.2s;
+    }
+
+    .filter-item input:focus,
+    .filter-item select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 5px #2563eb20;
+    }
+
+    .filter-item select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%234a6085' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: calc(100% - 20px) center;
+    }
+
+    .reset-filters {
+      background: #eff4ff;
+      border: none;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1e4b8a;
+      font-size: 1.3rem;
+      transition: all 0.2s;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .reset-filters:hover {
+      background: #2563eb;
+      color: white;
+      transform: rotate(30deg);
+    }
+
+    /* ===== TABLEAU MODERNE ===== */
+    .table-responsive {
+      border-radius: 28px;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+      background: white;
+    }
+
+    .table-modern {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 1000px;
+    }
+
+    .table-modern thead {
+      background: #f0f5fe;
+    }
+
+    .table-modern th {
+      padding: 1.2rem 1rem;
+      font-weight: 700;
+      color: #1c3f6e;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #d1dff5;
+      white-space: nowrap;
+    }
+
+    .table-modern td {
+      padding: 1.1rem 1rem;
+      vertical-align: middle;
+      color: #253652;
+      font-weight: 500;
+      border-bottom: 1px solid #edf2fa;
+    }
+
+    .table-modern tbody tr {
+      transition: all 0.2s;
+    }
+
+    .table-modern tbody tr:hover {
+      background: #f5faff;
+    }
+
+    /* Badge sexe */
+    .sexe-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .sexe-badge.homme {
+      background: #d5e6ff;
+      color: #194a7a;
+    }
+
+    .sexe-badge.femme {
+      background: #fce4f0;
+      color: #a52a6b;
+    }
+
+    /* Badge nationalité */
+    .nationalite-badge {
+      background: #eaf1fa;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #1e4f8a;
+      display: inline-block;
+    }
+
+    /* Boutons d'action */
+    .action-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-action.edit {
+      background: #f0f5ff;
+      color: #2563eb;
+    }
+
+    .btn-action.edit:hover {
+      background: #2563eb;
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    .btn-action.delete {
+      background: #ffe8e8;
+      color: #dc2626;
+    }
+
+    .btn-action.delete:hover {
+      background: #dc2626;
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    /* ===== PIED DE TABLE ===== */
+    .table-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+
+    .results-info {
+      background: #e6f0ff;
+      padding: 0.4rem 1.4rem;
+      border-radius: 50px;
+      font-weight: 500;
+      color: #1b4a7a;
+    }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      color: #bacfea;
+    }
+
+    .empty-state p {
+      font-size: 1.2rem;
+      color: #5f739b;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="patients-container">
+    <!-- En-tête avec nom de l'hôpital -->
+    <div class="hospital-header">
+      <div class="brand">
+        <h1>Hôpital <span>Moulaye Abdellah</span></h1>
+        <div class="subtitle">
+          <i class="bi bi-people"></i> Gestion des patients
+        </div>
+      </div>
+      <div class="action-buttons">
+        <a href="/administrateur/dashboard" class="btn-premium-primary">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+      </div>
+    </div>
+
+    <!-- Carte principale -->
+    <div class="patients-card">
+      <div class="card-header-custom">
+        <h2>
+          <i class="bi bi-person-hearts"></i> Liste des patients
+        </h2>
+        <span class="patient-count-badge" id="patientCount">
+          <i class="bi bi-person"></i> <span id="countDisplay">0</span> patients
+        </span>
+      </div>
+
+      <!-- Section filtres -->
+      <div class="filters-section">
+        <div class="filter-item">
+          <i class="bi bi-search"></i>
+          <input type="text" id="searchInput" placeholder="Nom, prénom...">
+        </div>
+        <div class="filter-item">
+          <i class="bi bi-gender-ambiguous"></i>
+          <select id="sexeFilter">
+            <option value="">Tous les sexes</option>
+            <option value="Homme">Homme</option>
+            <option value="Femme">Femme</option>
+          </select>
+        </div>
+        <div class="filter-item">
+          <i class="bi bi-globe"></i>
+          <input type="text" id="nationaliteFilter" placeholder="Nationalité...">
+        </div>
+        <div class="reset-filters" id="resetFilters" title="Réinitialiser les filtres">
+          <i class="bi bi-arrow-repeat"></i>
+        </div>
+      </div>
+
+      <!-- Tableau des patients (responsive) -->
+      <div class="table-responsive">
+        <table class="table-modern">
+          <thead>
+            <tr>
+              <th>Prénom</th>
+              <th>Nom</th>
+              <th>Âge</th>
+              <th>Téléphone</th>
+              <th>Sexe</th>
+              <th>Nationalité</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="patientsTable">
+            <!-- Les données seront injectées ici par JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer avec stats -->
+      <div class="table-footer">
+        <div class="results-info" id="resultsInfo">
+          <i class="bi bi-check-circle me-1"></i> <span id="resultsCount">0</span> patient(s) affiché(s)
+        </div>
+        <div></div> <!-- pour l'équilibre -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ========== CODE BACKEND STRICTEMENT IDENTIQUE ==========
+    // Les noms de variables, l'API, les IDs sont inchangés.
+    // Seule la présentation a été refaite.
+    
+    let allPatients = [];
+
+    // Charger les patients depuis l'API (inchangé)
+    fetch('/api/admin/patients')
+      .then(res => res.json())
+      .then(data => {
+        allPatients = data;
+        document.getElementById('countDisplay').innerText = allPatients.length;
+        renderTable(allPatients);
+      })
+      .catch(err => {
+        console.warn('Erreur backend (non modifiée) : ', err);
+        document.getElementById('patientsTable').innerHTML = `
+          <tr>
+            <td colspan="7" class="empty-state">
+              <i class="bi bi-exclamation-triangle"></i>
+              <p>Impossible de charger les patients</p>
+            </td>
+          </tr>
+        `;
+      });
+
+    // Fonction pour afficher le tableau filtré (inchangée dans la logique)
+    function renderTable(patients) {
+      const table = document.getElementById('patientsTable');
+      const resultsCount = document.getElementById('resultsCount');
+      
+      if (!patients || patients.length === 0) {
+        table.innerHTML = `
+          <tr>
+            <td colspan="7" class="empty-state">
+              <i class="bi bi-inbox"></i>
+              <p>Aucun patient trouvé</p>
+            </td>
+          </tr>
+        `;
+        resultsCount.innerText = '0';
+        return;
+      }
+
+      table.innerHTML = '';
+      patients.forEach(p => {
+        // Déterminer la classe du badge sexe
+        const sexeClass = p.sexe === 'Homme' ? 'homme' : (p.sexe === 'Femme' ? 'femme' : '');
+        
+        table.innerHTML += `
+          <tr>
+            <td><strong>${p.prenom || ''}</strong></td>
+            <td>${p.nom || ''}</td>
+            <td>
+              <span class="fw-semibold">${p.age || '-'}</span> ans
+            </td>
+            <td>
+              <i class="bi bi-telephone me-1 text-secondary"></i>${p.tel || '-'}
+            </td>
+            <td>
+              <span class="sexe-badge ${sexeClass}">
+                <i class="bi ${p.sexe === 'Homme' ? 'bi-gender-male' : (p.sexe === 'Femme' ? 'bi-gender-female' : 'bi-gender-ambiguous')}"></i>
+                ${p.sexe || ''}
+              </span>
+            </td>
+            <td>
+              <span class="nationalite-badge">
+                <i class="bi bi-flag me-1"></i>${p.nationalite || 'Non renseignée'}
+              </span>
+            </td>
+            <td>
+              <div class="action-group">
+                <a href="/administrateur/patient-edit/${p.idPatient}" class="btn-action edit" title="Modifier">
+                  <i class="bi bi-pencil"></i>
+                </a>
+                <a href="/api/admin/patient/delete/${p.idPatient}" class="btn-action delete" title="Supprimer" onclick="return confirm('Supprimer ce patient ?')">
+                  <i class="bi bi-trash"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+      
+      resultsCount.innerText = patients.length;
+    }
+
+    // Filtrage par recherche, sexe et nationalité (logique inchangée)
+    function applyFilters() {
+      const searchValue = document.getElementById('searchInput').value.toLowerCase().trim();
+      const sexeValue = document.getElementById('sexeFilter').value;
+      const natValue = document.getElementById('nationaliteFilter').value.toLowerCase().trim();
+
+      const filtered = allPatients.filter(p => {
+        const fullName = ((p.prenom || '') + ' ' + (p.nom || '')).toLowerCase();
+        const matchesName = fullName.includes(searchValue);
+        const matchesSexe = sexeValue ? p.sexe === sexeValue : true;
+        const matchesNat = natValue ? (p.nationalite || '').toLowerCase().includes(natValue) : true;
+        return matchesName && matchesSexe && matchesNat;
+      });
+
+      renderTable(filtered);
+    }
+
+    // Événements (inchangés)
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('sexeFilter').addEventListener('change', applyFilters);
+    document.getElementById('nationaliteFilter').addEventListener('input', applyFilters);
+    
+    // Réinitialisation des filtres
+    document.getElementById('resetFilters').addEventListener('click', function() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('sexeFilter').value = '';
+      document.getElementById('nationaliteFilter').value = '';
+      renderTable(allPatients);
+    });
+  </script>
+</body>
+</html>
