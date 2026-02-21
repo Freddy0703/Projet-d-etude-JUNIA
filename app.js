@@ -174,6 +174,22 @@ app.get('/medecin/parametres', isAuthenticated, (req, res) => {
   }
 });
 
+app.get('/medecin/dossiers', isAuthenticated, (req, res) => {
+  if (req.session.user.role === 'Medecin') {
+    res.sendFile(path.join(__dirname, 'medecin/dossiers.html'));
+  } else {
+    res.redirect('/connexion');
+  }
+});
+
+app.get('/medecin/examens/:idDossier', isAuthenticated, (req, res) => {
+  if (req.session.user.role === 'Medecin') {
+    res.sendFile(path.join(__dirname, 'medecin/examens.html'));
+  } else {
+    res.redirect('/connexion');
+  }
+});
+
 
 app.listen(PORT, () => {
     console.log(`Serveur démarré sur http://localhost:${PORT}`);

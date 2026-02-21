@@ -1,8 +1,6 @@
--- Création de la base de données
 CREATE DATABASE IF NOT EXISTS hopital_db;
 USE hopital_db;
 
--- Table des Patients
 CREATE TABLE Patient (
     idPatient INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
@@ -13,7 +11,6 @@ CREATE TABLE Patient (
     nationalite VARCHAR(100)
 );
 
--- Table des Dossiers Médicaux
 CREATE TABLE Dossier (
     idDossier INT AUTO_INCREMENT PRIMARY KEY,
     dateCreation DATE NOT NULL,
@@ -21,7 +18,7 @@ CREATE TABLE Dossier (
     FOREIGN KEY (idPatient) REFERENCES Patient(idPatient) ON DELETE CASCADE
 );
 
--- Table des Examens
+
 CREATE TABLE Examen (
     idExamen INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(150) NOT NULL,
@@ -30,7 +27,6 @@ CREATE TABLE Examen (
     FOREIGN KEY (idDossier) REFERENCES Dossier(idDossier) ON DELETE CASCADE
 );
 
--- Table des Utilisateurs
 CREATE TABLE Utilisateur (
     idUser INT AUTO_INCREMENT PRIMARY KEY,
     prenom VARCHAR(100) NOT NULL,
@@ -44,7 +40,7 @@ CREATE TABLE Utilisateur (
     photoProfil VARCHAR(255) DEFAULT 'default.png'
 );
 
--- Table Historique Connexions
+
 CREATE TABLE HistoriqueConnexion (
     idHistorique INT AUTO_INCREMENT PRIMARY KEY,
     idUser INT NOT NULL,
@@ -53,7 +49,6 @@ CREATE TABLE HistoriqueConnexion (
     FOREIGN KEY (idUser) REFERENCES Utilisateur(idUser) ON DELETE CASCADE
 );
 
--- Insertion du premier administrateur avec hash PHP ($2y$)
 INSERT INTO Utilisateur (prenom, nom, login, password, role, statut, photoProfil)
 VALUES ('', '', '',
         '$2y$10$1OwQLuhFkoW2oJ6T6k9vi.0Oy6ZVfyipTSaFA8k0bJ.43HMVVuODa', -- mot de passe : hopital123 --
