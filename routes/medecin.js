@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const router = express.Router();
 
-// Configuration de multer pour upload photo
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, '../images'));
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 module.exports = (db) => {
-  // Profil médecin
+
   router.get('/api/medecin/profile', async (req, res) => {
     if (!req.session.user || req.session.user.role !== 'Medecin') {
       return res.status(403).json({ error: "Accès refusé" });
@@ -25,7 +25,6 @@ module.exports = (db) => {
     res.json(req.session.user);
   });
 
-  // Dashboard médecin (statistiques + derniers patients)
   router.get('/api/medecin/dashboard', async (req, res) => {
     try {
       if (!req.session.user || req.session.user.role !== 'Medecin') {
@@ -62,7 +61,6 @@ module.exports = (db) => {
     }
   });
 
-  // Liste des patients
   router.get('/api/medecin/patients', async (req, res) => {
     try {
       const [rows] = await db.query("SELECT * FROM Patient");
@@ -73,7 +71,7 @@ module.exports = (db) => {
     }
   });
 
-  // Liste des dossiers
+
   router.get('/api/medecin/dossiers', async (req, res) => {
     try {
       const [rows] = await db.query(`
@@ -88,7 +86,6 @@ module.exports = (db) => {
     }
   });
 
-  // Examens d’un dossier
   router.get('/api/medecin/examens/:idDossier', async (req, res) => {
     try {
       const [rows] = await db.query(
@@ -102,7 +99,6 @@ module.exports = (db) => {
     }
   });
 
-  // Ajouter un examen
   router.post('/api/medecin/examen/add', async (req, res) => {
     try {
       const { nom, dateResultat, idDossier } = req.body;
@@ -117,7 +113,6 @@ module.exports = (db) => {
     }
   });
 
-  // Modifier un examen
   router.post('/api/medecin/examen/edit/:id', async (req, res) => {
     try {
       const { nom, dateResultat, idDossier } = req.body;
@@ -132,7 +127,6 @@ module.exports = (db) => {
     }
   });
 
-  // Supprimer un examen
   router.get('/api/medecin/examen/delete/:id', async (req, res) => {
     try {
       await db.query("DELETE FROM Examen WHERE idExamen=?", [req.params.id]);
@@ -143,7 +137,6 @@ module.exports = (db) => {
     }
   });
 
-  // Mise à jour infos médecin
   router.post('/api/medecin/update', upload.single('photoProfil'), async (req, res) => {
     try {
       const prenom = req.body.prenom || req.session.user.prenom;
@@ -168,7 +161,6 @@ module.exports = (db) => {
     }
   });
 
-  // Changement mot de passe médecin
   router.post('/api/medecin/change-password', async (req, res) => {
     try {
       const { currentPassword, newPassword, confirmPassword } = req.body;
