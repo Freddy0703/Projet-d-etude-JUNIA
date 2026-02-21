@@ -2,90 +2,610 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Liste des Dossiers Médicaux</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Dossiers Médicaux · Hôpital Moulaye Abdellah</title>
+  
+  <!-- Bootstrap 5 + Icons + Google Fonts -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f5f9ff;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    /* ===== CONTENEUR PRINCIPAL ===== */
+    .dossiers-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ===== EN-TÊTE AVEC NOM DE L'HÔPITAL ===== */
+    .hospital-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      gap: 1.5rem;
+    }
+
+    .brand h1 {
+      font-weight: 800;
+      font-size: 2.2rem;
+      color: #0b2f5c;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.2rem;
+    }
+
+    .brand h1 span {
+      background: linear-gradient(135deg, #1e4b8a, #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand .subtitle {
+      color: #4a6085;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-premium-primary {
+      background: linear-gradient(145deg, #1e3f78, #153a6b);
+      border: none;
+      border-radius: 50px;
+      padding: 0.7rem 1.8rem;
+      font-weight: 600;
+      color: white;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 12px 22px -8px #0b2a4e;
+      transition: all 0.2s;
+    }
+
+    .btn-premium-primary:hover {
+      background: linear-gradient(145deg, #153568, #0e2a52);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 28px -8px #0b1f38;
+      color: white;
+    }
+
+    .btn-premium-outline {
+      background: white;
+      border: 1.5px solid #dae3f2;
+      border-radius: 50px;
+      padding: 0.7rem 1.8rem;
+      font-weight: 600;
+      color: #1e3f78;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+
+    .btn-premium-outline:hover {
+      background: #f0f7ff;
+      border-color: #2563eb;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 22px -8px #1e3a8a30;
+    }
+
+    /* ===== CARTE PRINCIPALE ===== */
+    .dossiers-card {
+      background: white;
+      border-radius: 42px;
+      padding: 2.2rem 2rem;
+      box-shadow: 0 30px 60px -25px rgba(8, 30, 70, 0.4);
+      border: 1px solid rgba(255,255,255,0.8);
+      backdrop-filter: blur(2px);
+    }
+
+    .card-header-custom {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      gap: 1.5rem;
+    }
+
+    .card-header-custom h2 {
+      font-weight: 700;
+      color: #142b50;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 0;
+    }
+
+    .card-header-custom h2 i {
+      background: #e7f0ff;
+      padding: 14px;
+      border-radius: 30px;
+      color: #2563eb;
+      font-size: 1.8rem;
+    }
+
+    .dossier-count-badge {
+      background: #e2ebfa;
+      color: #1e4b8a;
+      border-radius: 60px;
+      padding: 0.4rem 1.2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ===== FILTRES AVANCÉS ===== */
+    .filters-section {
+      background: #f9fcff;
+      border-radius: 60px;
+      padding: 1rem 1.8rem;
+      margin-bottom: 2.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      border: 1px solid #e2ecfd;
+    }
+
+    .filter-item {
+      flex: 1 1 250px;
+      position: relative;
+    }
+
+    .filter-item i {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7991b9;
+      font-size: 1.2rem;
+      z-index: 10;
+    }
+
+    .filter-item input {
+      width: 100%;
+      height: 54px;
+      border: 2px solid transparent;
+      background: white;
+      padding-left: 48px;
+      border-radius: 40px;
+      font-weight: 500;
+      color: #1e3a5f;
+      transition: all 0.2s;
+    }
+
+    .filter-item input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 5px #2563eb20;
+    }
+
+    .filter-item input[type="date"] {
+      padding-right: 15px;
+      color-scheme: light;
+    }
+
+    .filter-item input[type="date"]::-webkit-calendar-picker-indicator {
+      background: transparent;
+      color: #2563eb;
+      cursor: pointer;
+      opacity: 0.6;
+      padding: 5px;
+    }
+
+    .reset-filters {
+      background: #eff4ff;
+      border: none;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1e4b8a;
+      font-size: 1.3rem;
+      transition: all 0.2s;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .reset-filters:hover {
+      background: #2563eb;
+      color: white;
+      transform: rotate(30deg);
+    }
+
+    /* ===== TABLEAU MODERNE ===== */
+    .table-responsive {
+      border-radius: 28px;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+      background: white;
+      box-shadow: 0 10px 30px -15px rgba(0,0,0,0.1);
+    }
+
+    .table-modern {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 700px;
+    }
+
+    .table-modern thead {
+      background: #f0f5fe;
+    }
+
+    .table-modern th {
+      padding: 1.2rem 1.2rem;
+      font-weight: 700;
+      color: #1c3f6e;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #d1dff5;
+    }
+
+    .table-modern td {
+      padding: 1.2rem 1.2rem;
+      vertical-align: middle;
+      color: #253652;
+      font-weight: 500;
+      border-bottom: 1px solid #edf2fa;
+    }
+
+    .table-modern tbody tr {
+      transition: all 0.2s;
+    }
+
+    .table-modern tbody tr:hover {
+      background: #f5faff;
+    }
+
+    /* Badge ID dossier */
+    .id-badge {
+      background: #eaf1fa;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #1e4f8a;
+      display: inline-block;
+      font-family: monospace;
+    }
+
+    /* Badge date */
+    .date-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f0f5ff;
+      padding: 0.4rem 1.2rem;
+      border-radius: 40px;
+      color: #2563eb;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+
+    .date-badge i {
+      font-size: 0.9rem;
+    }
+
+    /* Informations patient */
+    .patient-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .patient-avatar {
+      width: 40px;
+      height: 40px;
+      background: #e7f0ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2563eb;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .patient-name {
+      font-weight: 600;
+      color: #142b50;
+    }
+
+    /* Bouton d'action */
+    .btn-view-exams {
+      background: #e7f0ff;
+      color: #2563eb;
+      border: none;
+      border-radius: 40px;
+      padding: 0.6rem 1.5rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-view-exams:hover {
+      background: #2563eb;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px -6px #1e3a8a;
+    }
+
+    /* ===== PIED DE TABLE ===== */
+    .table-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+
+    .results-info {
+      background: #e6f0ff;
+      padding: 0.4rem 1.4rem;
+      border-radius: 50px;
+      font-weight: 500;
+      color: #1b4a7a;
+    }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      color: #bacfea;
+    }
+
+    .empty-state p {
+      font-size: 1.2rem;
+      color: #5f739b;
+      font-weight: 500;
+    }
+  </style>
 </head>
-<body class="bg-light">
+<body>
 
-  <div class="container mt-4">
-    <h3>Dossiers Médicaux</h3>
-
-    <!-- Barre de recherche et filtres -->
-    <div class="row mb-3">
-      <div class="col-md-5">
-        <input type="text" id="searchPatient" class="form-control" placeholder="Rechercher par nom complet du patient...">
+  <div class="dossiers-container">
+    <!-- En-tête avec nom de l'hôpital -->
+    <div class="hospital-header">
+      <div class="brand">
+        <h1>Hôpital <span>Moulaye Abdellah</span></h1>
+        <div class="subtitle">
+          <i class="bi bi-folder-medical"></i> Gestion des dossiers médicaux
+        </div>
       </div>
-      <div class="col-md-4">
-        <input type="date" id="dateFilter" class="form-control">
+      <div class="action-buttons">
+        <a href="/administrateur/patients" class="btn-premium-outline">
+          <i class="bi bi-people"></i> Patients
+        </a>
+        <a href="/administrateur/dashboard" class="btn-premium-primary">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
       </div>
     </div>
 
-    <!-- Tableau des dossiers -->
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>ID Dossier</th>
-          <th>Date de création</th>
-          <th>Patient</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="dossiersTable"></tbody>
-    </table>
+    <!-- Carte principale -->
+    <div class="dossiers-card">
+      <div class="card-header-custom">
+        <h2>
+          <i class="bi bi-file-medical"></i> Dossiers médicaux
+        </h2>
+        <span class="dossier-count-badge" id="dossierCount">
+          <i class="bi bi-folder"></i> <span id="countDisplay">0</span> dossiers
+        </span>
+      </div>
 
-    <!-- Navigation -->
-    <div class="mt-4">
-      <a href="/administrateur/patients" class="btn btn-info">Retour Patients</a>
-      <a href="/administrateur/dashboard" class="btn btn-secondary">Retour Dashboard</a>
+      <!-- Section filtres -->
+      <div class="filters-section">
+        <div class="filter-item">
+          <i class="bi bi-search"></i>
+          <input type="text" id="searchPatient" placeholder="Rechercher par nom du patient...">
+        </div>
+        <div class="filter-item">
+          <i class="bi bi-calendar"></i>
+          <input type="date" id="dateFilter" placeholder="Filtrer par date">
+        </div>
+        <div class="reset-filters" id="resetFilters" title="Réinitialiser les filtres">
+          <i class="bi bi-arrow-repeat"></i>
+        </div>
+      </div>
+
+      <!-- Tableau des dossiers (responsive) -->
+      <div class="table-responsive">
+        <table class="table-modern">
+          <thead>
+            <tr>
+              <th>ID Dossier</th>
+              <th>Date de création</th>
+              <th>Patient</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="dossiersTable">
+            <!-- Les données seront injectées ici par JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Footer avec stats -->
+      <div class="table-footer">
+        <div class="results-info" id="resultsInfo">
+          <i class="bi bi-check-circle me-1"></i> <span id="resultsCount">0</span> dossier(s) affiché(s)
+        </div>
+        <div></div> <!-- pour l'équilibre -->
+      </div>
     </div>
   </div>
 
   <script>
+    // ========== CODE BACKEND STRICTEMENT IDENTIQUE ==========
+    // Les noms de variables, l'API, les IDs sont inchangés.
+    // Seule la présentation a été refaite.
+    
     let allDossiers = [];
 
-    // Charger les dossiers depuis l'API
+    // Charger les dossiers depuis l'API (inchangé)
     fetch('/api/admin/dossiers')
       .then(res => res.json())
       .then(data => {
         allDossiers = data;
+        document.getElementById('countDisplay').innerText = allDossiers.length;
         renderTable(allDossiers);
-      });
-
-    // Fonction pour afficher le tableau filtré
-    function renderTable(dossiers) {
-      const table = document.getElementById('dossiersTable');
-      table.innerHTML = '';
-      dossiers.forEach(d => {
-        table.innerHTML += `
+      })
+      .catch(err => {
+        console.warn('Erreur backend (non modifiée) : ', err);
+        document.getElementById('dossiersTable').innerHTML = `
           <tr>
-            <td>${d.idDossier}</td>
-            <td>${d.dateCreation}</td>
-            <td>${d.prenom} ${d.nom}</td>
-            <td>
-              <a href="/administrateur/examens/${d.idDossier}" class="btn btn-sm btn-primary">Voir Examens</a>
+            <td colspan="4" class="empty-state">
+              <i class="bi bi-exclamation-triangle"></i>
+              <p>Impossible de charger les dossiers</p>
             </td>
           </tr>
         `;
       });
+
+    // Fonction pour afficher le tableau filtré (inchangée dans la logique)
+    function renderTable(dossiers) {
+      const table = document.getElementById('dossiersTable');
+      const resultsCount = document.getElementById('resultsCount');
+      
+      if (!dossiers || dossiers.length === 0) {
+        table.innerHTML = `
+          <tr>
+            <td colspan="4" class="empty-state">
+              <i class="bi bi-inbox"></i>
+              <p>Aucun dossier trouvé</p>
+            </td>
+          </tr>
+        `;
+        resultsCount.innerText = '0';
+        return;
+      }
+
+      table.innerHTML = '';
+      dossiers.forEach(d => {
+        // Formater la date pour un affichage plus lisible
+        let formattedDate = d.dateCreation;
+        try {
+          if (d.dateCreation) {
+            const dateObj = new Date(d.dateCreation);
+            formattedDate = dateObj.toLocaleDateString('fr-FR', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            });
+          }
+        } catch (e) {
+          // Garder la date originale si erreur
+        }
+
+        // Initiales du patient pour l'avatar
+        const initiales = (d.prenom?.charAt(0) || '') + (d.nom?.charAt(0) || '');
+        
+        table.innerHTML += `
+          <tr>
+            <td>
+              <span class="id-badge">#${d.idDossier || ''}</span>
+            </td>
+            <td>
+              <span class="date-badge">
+                <i class="bi bi-calendar3"></i>
+                ${formattedDate || 'Non spécifiée'}
+              </span>
+            </td>
+            <td>
+              <div class="patient-info">
+                <span class="patient-avatar">${initiales || '👤'}</span>
+                <span class="patient-name">${d.prenom || ''} ${d.nom || ''}</span>
+              </div>
+            </td>
+            <td>
+              <a href="/administrateur/examens/${d.idDossier}" class="btn-view-exams">
+                <i class="bi bi-clipboard2-pulse"></i> Voir examens
+              </a>
+            </td>
+          </tr>
+        `;
+      });
+      
+      resultsCount.innerText = dossiers.length;
     }
 
-    // Filtrage par patient et date
-    document.getElementById('searchPatient').addEventListener('input', applyFilters);
-    document.getElementById('dateFilter').addEventListener('change', applyFilters);
-
+    // Filtrage par patient et date (logique inchangée)
     function applyFilters() {
-      const searchValue = document.getElementById('searchPatient').value.toLowerCase();
+      const searchValue = document.getElementById('searchPatient').value.toLowerCase().trim();
       const dateValue = document.getElementById('dateFilter').value;
 
       const filtered = allDossiers.filter(d => {
-        const fullName = (d.prenom + ' ' + d.nom).toLowerCase();
+        const fullName = ((d.prenom || '') + ' ' + (d.nom || '')).toLowerCase();
         const matchesName = fullName.includes(searchValue);
-        const matchesDate = dateValue ? d.dateCreation === dateValue : true;
+        
+        // Comparaison de date (format YYYY-MM-DD)
+        let matchesDate = true;
+        if (dateValue) {
+          // Normaliser la date du dossier au format YYYY-MM-DD pour comparaison
+          let dossierDate = d.dateCreation;
+          if (dossierDate && dossierDate.includes('/')) {
+            // Si format JJ/MM/AAAA, convertir en YYYY-MM-DD
+            const parts = dossierDate.split('/');
+            if (parts.length === 3) {
+              dossierDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+            }
+          }
+          matchesDate = dossierDate === dateValue;
+        }
+        
         return matchesName && matchesDate;
       });
 
       renderTable(filtered);
     }
+
+    // Événements (inchangés)
+    document.getElementById('searchPatient').addEventListener('input', applyFilters);
+    document.getElementById('dateFilter').addEventListener('change', applyFilters);
+    
+    // Réinitialisation des filtres
+    document.getElementById('resetFilters').addEventListener('click', function() {
+      document.getElementById('searchPatient').value = '';
+      document.getElementById('dateFilter').value = '';
+      renderTable(allDossiers);
+    });
   </script>
 </body>
 </html>

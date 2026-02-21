@@ -115,6 +115,22 @@ app.get('/administrateur/dossiers', isAuthenticated, (req, res) => {
   }
 });
 
+app.get('/administrateur/examens/:idDossier', isAuthenticated, (req, res) => {
+  if (req.session.user.role === 'Administrateur') {
+    res.sendFile(path.join(__dirname, 'administrateur/examens.html'));
+  } else {
+    res.redirect('/connexion');
+  }
+});
+
+app.get('/administrateur/historique', isAuthenticated, (req, res) => {
+  if (req.session.user.role === 'Administrateur') {
+    res.sendFile(path.join(__dirname, 'administrateur/historique.html'));
+  } else {
+    res.redirect('/connexion');
+  }
+});
+
 
 app.listen(PORT, () => {
     console.log(`Serveur démarré sur http://localhost:${PORT}`);

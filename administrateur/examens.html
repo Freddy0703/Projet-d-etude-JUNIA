@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>Historique Connexions · Hôpital Moulaye Abdellah</title>
+  <title>Examens Médicaux · Hôpital Moulaye Abdellah</title>
   
   <!-- Bootstrap 5 + Icons + Google Fonts -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -25,8 +25,8 @@
     }
 
     /* ===== CONTENEUR PRINCIPAL ===== */
-    .historique-container {
-      max-width: 1300px;
+    .examens-container {
+      max-width: 1200px;
       margin: 0 auto;
     }
 
@@ -94,8 +94,29 @@
       color: white;
     }
 
+    .btn-premium-outline {
+      background: white;
+      border: 1.5px solid #dae3f2;
+      border-radius: 50px;
+      padding: 0.7rem 1.8rem;
+      font-weight: 600;
+      color: #1e3f78;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+
+    .btn-premium-outline:hover {
+      background: #f0f7ff;
+      border-color: #2563eb;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 22px -8px #1e3a8a30;
+    }
+
     /* ===== CARTE PRINCIPALE ===== */
-    .historique-card {
+    .examens-card {
       background: white;
       border-radius: 42px;
       padding: 2.2rem 2rem;
@@ -130,7 +151,7 @@
       font-size: 1.8rem;
     }
 
-    .historique-count-badge {
+    .examen-count-badge {
       background: #e2ebfa;
       color: #1e4b8a;
       border-radius: 60px;
@@ -140,6 +161,23 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
+    }
+
+    .dossier-info {
+      background: #f0f7ff;
+      border-radius: 40px;
+      padding: 0.6rem 1.5rem;
+      margin-bottom: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: #1e4b8a;
+      font-weight: 500;
+      border: 1px solid #d4e2fc;
+    }
+
+    .dossier-info i {
+      font-size: 1.2rem;
     }
 
     /* ===== FILTRES AVANCÉS ===== */
@@ -156,7 +194,7 @@
     }
 
     .filter-item {
-      flex: 1 1 200px;
+      flex: 1 1 250px;
       position: relative;
     }
 
@@ -170,8 +208,7 @@
       z-index: 10;
     }
 
-    .filter-item input,
-    .filter-item select {
+    .filter-item input {
       width: 100%;
       height: 54px;
       border: 2px solid transparent;
@@ -183,21 +220,23 @@
       transition: all 0.2s;
     }
 
-    .filter-item input:focus,
-    .filter-item select:focus {
+    .filter-item input:focus {
       outline: none;
       border-color: #2563eb;
       box-shadow: 0 0 0 5px #2563eb20;
     }
 
-    .filter-item select {
-      appearance: none;
-      -webkit-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%234a6085' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: calc(100% - 20px) center;
-      background-size: 16px;
-      padding-right: 45px;
+    .filter-item input[type="date"] {
+      padding-right: 15px;
+      color-scheme: light;
+    }
+
+    .filter-item input[type="date"]::-webkit-calendar-picker-indicator {
+      background: transparent;
+      color: #2563eb;
+      cursor: pointer;
+      opacity: 0.6;
+      padding: 5px;
     }
 
     .reset-filters {
@@ -235,7 +274,7 @@
       width: 100%;
       border-collapse: separate;
       border-spacing: 0;
-      min-width: 800px;
+      min-width: 700px;
     }
 
     .table-modern thead {
@@ -268,89 +307,23 @@
       background: #f5faff;
     }
 
-    /* Avatar utilisateur */
-    .user-avatar-small {
-      width: 40px;
-      height: 40px;
-      background: #e7f0ff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #2563eb;
+    /* Badge ID examen */
+    .id-badge {
+      background: #eaf1fa;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
       font-weight: 600;
-      font-size: 1rem;
-      margin-right: 12px;
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-    }
-
-    .user-name {
-      font-weight: 600;
-      color: #142b50;
-    }
-
-    .user-email {
-      font-size: 0.8rem;
-      color: #6f88b0;
-      margin-top: 2px;
-    }
-
-    /* Badge rôle */
-    .role-badge {
+      color: #1e4f8a;
       display: inline-block;
-      padding: 0.4rem 1.2rem;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 0.8rem;
-      letter-spacing: 0.3px;
-      text-transform: uppercase;
-    }
-
-    .role-badge.administrateur {
-      background: #1e2f5a;
-      color: white;
-    }
-
-    .role-badge.medecin {
-      background: #d2f0e4;
-      color: #0b5e4b;
-    }
-
-    .role-badge.secretaire {
-      background: #fff2df;
-      color: #b45b0a;
-    }
-
-    /* Badge action */
-    .action-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 0.4rem 1.2rem;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 0.8rem;
-    }
-
-    .action-badge.connexion {
-      background: #d4edda;
-      color: #0b5e2e;
-    }
-
-    .action-badge.deconnexion {
-      background: #f8d7da;
-      color: #9b1c2c;
+      font-family: monospace;
     }
 
     /* Badge date */
     .date-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       background: #f0f5ff;
       padding: 0.4rem 1.2rem;
       border-radius: 40px;
@@ -361,6 +334,72 @@
 
     .date-badge i {
       font-size: 0.9rem;
+    }
+
+    .date-badge.empty {
+      background: #f5f5f5;
+      color: #8a9bb8;
+    }
+
+    /* Nom de l'examen */
+    .examen-name {
+      font-weight: 600;
+      color: #142b50;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .examen-name i {
+      color: #2563eb;
+      background: #e7f0ff;
+      padding: 8px;
+      border-radius: 12px;
+      font-size: 1rem;
+    }
+
+    /* Boutons d'action */
+    .action-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-action.edit {
+      background: #f0f5ff;
+      color: #2563eb;
+    }
+
+    .btn-action.edit:hover {
+      background: #2563eb;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px -6px #1e3a8a;
+    }
+
+    .btn-action.delete {
+      background: #ffe8e8;
+      color: #dc2626;
+    }
+
+    .btn-action.delete:hover {
+      background: #dc2626;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px -6px #b91c1c;
     }
 
     /* ===== PIED DE TABLE ===== */
@@ -400,16 +439,19 @@
 </head>
 <body>
 
-  <div class="historique-container">
+  <div class="examens-container">
     <!-- En-tête avec nom de l'hôpital -->
     <div class="hospital-header">
       <div class="brand">
         <h1>Hôpital <span>Moulaye Abdellah</span></h1>
         <div class="subtitle">
-          <i class="bi bi-clock-history"></i> Historique des connexions
+          <i class="bi bi-clipboard2-pulse"></i> Gestion des examens médicaux
         </div>
       </div>
       <div class="action-buttons">
+        <a href="/administrateur/dossiers" class="btn-premium-outline">
+          <i class="bi bi-folder-medical"></i> Dossiers
+        </a>
         <a href="/administrateur/dashboard" class="btn-premium-primary">
           <i class="bi bi-speedometer2"></i> Dashboard
         </a>
@@ -417,56 +459,49 @@
     </div>
 
     <!-- Carte principale -->
-    <div class="historique-card">
+    <div class="examens-card">
       <div class="card-header-custom">
         <h2>
-          <i class="bi bi-journal-bookmark-fill"></i> Journal des connexions
+          <i class="bi bi-clipboard2-check"></i> Examens médicaux
         </h2>
-        <span class="historique-count-badge" id="historiqueCount">
-          <i class="bi bi-eye"></i> <span id="countDisplay">0</span> événements
+        <span class="examen-count-badge" id="examenCount">
+          <i class="bi bi-file-text"></i> <span id="countDisplay">0</span> examens
         </span>
+      </div>
+
+      <!-- Information sur le dossier (récupérée de l'URL) -->
+      <div class="dossier-info" id="dossierInfo">
+        <i class="bi bi-folder2-open"></i>
+        <span>Dossier patient <strong id="dossierIdDisplay"></strong></span>
       </div>
 
       <!-- Section filtres -->
       <div class="filters-section">
         <div class="filter-item">
           <i class="bi bi-search"></i>
-          <input type="text" id="searchUser" placeholder="Rechercher par nom...">
+          <input type="text" id="searchExam" placeholder="Rechercher par nom d'examen...">
         </div>
         <div class="filter-item">
-          <i class="bi bi-tags"></i>
-          <select id="roleFilter">
-            <option value="">Tous les rôles</option>
-            <option value="Administrateur">Administrateur</option>
-            <option value="Secretaire">Secrétaire</option>
-            <option value="Medecin">Médecin</option>
-          </select>
-        </div>
-        <div class="filter-item">
-          <i class="bi bi-shield"></i>
-          <select id="actionFilter">
-            <option value="">Toutes les actions</option>
-            <option value="Connexion">Connexion</option>
-            <option value="Deconnexion">Déconnexion</option>
-          </select>
+          <i class="bi bi-calendar"></i>
+          <input type="date" id="dateFilter" placeholder="Filtrer par date">
         </div>
         <div class="reset-filters" id="resetFilters" title="Réinitialiser les filtres">
           <i class="bi bi-arrow-repeat"></i>
         </div>
       </div>
 
-      <!-- Tableau historique (responsive) -->
+      <!-- Tableau des examens (responsive) -->
       <div class="table-responsive">
         <table class="table-modern">
           <thead>
             <tr>
-              <th>Utilisateur</th>
-              <th>Rôle</th>
-              <th>Action</th>
-              <th>Date</th>
+              <th>ID Examen</th>
+              <th>Nom de l'examen</th>
+              <th>Date du résultat</th>
+              <th>Actions</th>
             </tr>
           </thead>
-          <tbody id="historiqueTable">
+          <tbody id="examensTable">
             <!-- Les données seront injectées ici par JS -->
           </tbody>
         </table>
@@ -475,7 +510,7 @@
       <!-- Footer avec stats -->
       <div class="table-footer">
         <div class="results-info" id="resultsInfo">
-          <i class="bi bi-check-circle me-1"></i> <span id="resultsCount">0</span> événement(s) affiché(s)
+          <i class="bi bi-check-circle me-1"></i> <span id="resultsCount">0</span> examen(s) affiché(s)
         </div>
         <div></div> <!-- pour l'équilibre -->
       </div>
@@ -487,39 +522,48 @@
     // Les noms de variables, l'API, les IDs sont inchangés.
     // Seule la présentation a été refaite.
     
-    let allHistorique = [];
+    let allExamens = [];
+    const urlParams = new URLSearchParams(window.location.search);
+    const dossierId = urlParams.get('idDossier');
 
-    // Charger l'historique depuis l'API (inchangé)
-    fetch('/api/admin/historique')
+    // Afficher l'ID du dossier dans l'info
+    if (dossierId) {
+      document.getElementById('dossierIdDisplay').innerText = `#${dossierId}`;
+    } else {
+      document.getElementById('dossierInfo').style.display = 'none';
+    }
+
+    // Charger les examens depuis l'API (inchangé)
+    fetch('/api/admin/examens/' + dossierId)
       .then(res => res.json())
       .then(data => {
-        allHistorique = data;
-        document.getElementById('countDisplay').innerText = allHistorique.length;
-        renderTable(allHistorique);
+        allExamens = data;
+        document.getElementById('countDisplay').innerText = allExamens.length;
+        renderTable(allExamens);
       })
       .catch(err => {
         console.warn('Erreur backend (non modifiée) : ', err);
-        document.getElementById('historiqueTable').innerHTML = `
+        document.getElementById('examensTable').innerHTML = `
           <tr>
             <td colspan="4" class="empty-state">
               <i class="bi bi-exclamation-triangle"></i>
-              <p>Impossible de charger l'historique</p>
+              <p>Impossible de charger les examens</p>
             </td>
           </tr>
         `;
       });
 
     // Fonction pour afficher le tableau filtré (inchangée dans la logique)
-    function renderTable(historique) {
-      const table = document.getElementById('historiqueTable');
+    function renderTable(examens) {
+      const table = document.getElementById('examensTable');
       const resultsCount = document.getElementById('resultsCount');
       
-      if (!historique || historique.length === 0) {
+      if (!examens || examens.length === 0) {
         table.innerHTML = `
           <tr>
             <td colspan="4" class="empty-state">
               <i class="bi bi-inbox"></i>
-              <p>Aucun événement trouvé</p>
+              <p>Aucun examen trouvé</p>
             </td>
           </tr>
         `;
@@ -528,99 +572,100 @@
       }
 
       table.innerHTML = '';
-      historique.forEach(h => {
-        // Déterminer la classe du badge rôle
-        let roleClass = '';
-        if (h.role === 'Administrateur') roleClass = 'administrateur';
-        else if (h.role === 'Medecin') roleClass = 'medecin';
-        else if (h.role === 'Secretaire') roleClass = 'secretaire';
+      examens.forEach(e => {
+        // Formater la date pour un affichage plus lisible
+        let formattedDate = e.dateResultat;
+        let dateClass = 'date-badge';
         
-        // Déterminer la classe du badge action
-        const actionClass = h.action === 'Connexion' ? 'connexion' : 'deconnexion';
-        const actionIcon = h.action === 'Connexion' ? 'bi-box-arrow-in-right' : 'bi-box-arrow-right';
-        
-        // Initiales pour l'avatar
-        const initiales = ((h.prenom || '')[0] || '') + ((h.nom || '')[0] || '');
-        
-        // Formater la date
-        let formattedDate = h.dateAction;
-        try {
-          if (h.dateAction) {
-            const dateObj = new Date(h.dateAction);
+        if (e.dateResultat) {
+          try {
+            const dateObj = new Date(e.dateResultat);
             formattedDate = dateObj.toLocaleDateString('fr-FR', {
               day: '2-digit',
               month: '2-digit',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
+              year: 'numeric'
             });
+          } catch (err) {
+            // Garder la date originale
           }
-        } catch (e) {
-          // Garder la date originale
+        } else {
+          formattedDate = 'Non renseignée';
+          dateClass += ' empty';
         }
         
         table.innerHTML += `
           <tr>
             <td>
-              <div class="user-info">
-                <span class="user-avatar-small">${initiales || '👤'}</span>
-                <div>
-                  <div class="user-name">${h.prenom || ''} ${h.nom || ''}</div>
-                  <div class="user-email">${h.login || ''}</div>
-                </div>
-              </div>
+              <span class="id-badge">#${e.idExamen || ''}</span>
             </td>
             <td>
-              <span class="role-badge ${roleClass}">${h.role || ''}</span>
-            </td>
-            <td>
-              <span class="action-badge ${actionClass}">
-                <i class="bi ${actionIcon}"></i>
-                ${h.action || ''}
+              <span class="examen-name">
+                <i class="bi bi-file-medical"></i>
+                ${e.nom || 'Examen sans nom'}
               </span>
             </td>
             <td>
-              <span class="date-badge">
+              <span class="${dateClass}">
                 <i class="bi bi-calendar3"></i>
-                ${formattedDate || h.dateAction || ''}
+                ${formattedDate}
               </span>
+            </td>
+            <td>
+              <div class="action-group">
+                <a href="/administrateur/examen-edit/${e.idExamen}" class="btn-action edit" title="Modifier l'examen">
+                  <i class="bi bi-pencil"></i> Modifier
+                </a>
+                <a href="/api/admin/examen/delete/${e.idExamen}" class="btn-action delete" title="Supprimer l'examen" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet examen ?')">
+                  <i class="bi bi-trash"></i> Supprimer
+                </a>
+              </div>
             </td>
           </tr>
         `;
       });
       
-      resultsCount.innerText = historique.length;
+      resultsCount.innerText = examens.length;
     }
 
-    // Filtrage (logique inchangée)
+    // Filtrage par nom et date (logique inchangée)
     function applyFilters() {
-      const searchValue = document.getElementById('searchUser').value.toLowerCase().trim();
-      const roleValue = document.getElementById('roleFilter').value;
-      const actionValue = document.getElementById('actionFilter').value;
+      const searchValue = document.getElementById('searchExam').value.toLowerCase().trim();
+      const dateValue = document.getElementById('dateFilter').value;
 
-      const filtered = allHistorique.filter(h => {
-        const fullName = ((h.prenom || '') + ' ' + (h.nom || '')).toLowerCase();
-        const email = (h.login || '').toLowerCase();
-        const matchesName = fullName.includes(searchValue) || email.includes(searchValue);
-        const matchesRole = roleValue ? h.role === roleValue : true;
-        const matchesAction = actionValue ? h.action === actionValue : true;
-        return matchesName && matchesRole && matchesAction;
+      const filtered = allExamens.filter(e => {
+        const matchesName = (e.nom || '').toLowerCase().includes(searchValue);
+        
+        // Comparaison de date
+        let matchesDate = true;
+        if (dateValue && e.dateResultat) {
+          // Normaliser la date pour comparaison
+          let examenDate = e.dateResultat;
+          if (examenDate && examenDate.includes('/')) {
+            const parts = examenDate.split('/');
+            if (parts.length === 3) {
+              examenDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+            }
+          }
+          matchesDate = examenDate === dateValue;
+        } else if (dateValue && !e.dateResultat) {
+          matchesDate = false;
+        }
+        
+        return matchesName && matchesDate;
       });
 
       renderTable(filtered);
     }
 
     // Événements (inchangés)
-    document.getElementById('searchUser').addEventListener('input', applyFilters);
-    document.getElementById('roleFilter').addEventListener('change', applyFilters);
-    document.getElementById('actionFilter').addEventListener('change', applyFilters);
+    document.getElementById('searchExam').addEventListener('input', applyFilters);
+    document.getElementById('dateFilter').addEventListener('change', applyFilters);
     
     // Réinitialisation des filtres
     document.getElementById('resetFilters').addEventListener('click', function() {
-      document.getElementById('searchUser').value = '';
-      document.getElementById('roleFilter').value = '';
-      document.getElementById('actionFilter').value = '';
-      renderTable(allHistorique);
+      document.getElementById('searchExam').value = '';
+      document.getElementById('dateFilter').value = '';
+      renderTable(allExamens);
     });
   </script>
 </body>

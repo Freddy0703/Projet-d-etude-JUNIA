@@ -509,6 +509,62 @@ module.exports = (db) => {
     }
   });
 
+    // Récupérer les examens d’un dossier
+  router.get('/api/admin/examens/:idDossier', async (req, res) => {
+    try {
+      const [rows] = await db.query(
+        "SELECT idExamen, nom, dateResultat FROM Examen WHERE idDossier=?",
+        [req.params.idDossier]
+      );
+      res.json(rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Erreur serveur");
+    }
+  });
+
+  // Modifier un examen
+  router.post('/api/admin/examen/edit/:id', async (req, res) => {
+    try {
+      const { nom, dateResultat } = req.body;
+      await db.query(
+        "UPDATE Examen SET nom=?, dateResultat=? WHERE idExamen=?",
+        [nom, dateResultat, req.params.id]
+      );
+      res.redirect('/administrateur/examens?idDossier=' + req.body.idDossier);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Erreur serveur");
+    }
+  });
+
+  // Supprimer un examen
+  router.get('/api/admin/examen/delete/:id', async (req, res) => {
+    try {
+      await db.query("DELETE FROM Examen WHERE idExamen=?", [req.params.id]);
+      res.redirect('/administrateur/dossiers');
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Erreur serveur");
+    }
+  });
+
+    // Récupérer l'historique des connexions
+  router.get('/api/admin/historique', async (req, res) => {
+    try {
+      const [rows] = await db.query(`
+        SELECT Utilisateur.prenom, Utilisateur.nom, Utilisateur.role, HistoriqueConnexion.action, HistoriqueConnexion.dateAction
+        FROM HistoriqueConnexion
+        INNER JOIN Utilisateur ON HistoriqueConnexion.idUser = Utilisateur.idUser
+        ORDER BY HistoriqueConnexion.dateAction DESC
+      `);
+      res.json(rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Erreur serveur");
+    }
+  });
+
 
   return router;
 };
