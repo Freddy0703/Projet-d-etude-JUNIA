@@ -190,6 +190,35 @@ app.get('/medecin/examens/:idDossier', isAuthenticated, (req, res) => {
   }
 });
 
+// Charger routes secrétaire
+const secretaireRoutes = require('./routes/secretaire')(db);
+app.use('/', secretaireRoutes);
+
+// Route pour afficher le dashboard secrétaire
+app.get('/secretaire/dashboard', isAuthenticated, (req, res) => {
+  if (req.session.user.role === 'Secretaire') {
+    res.sendFile(path.join(__dirname, 'secretaire/dashboard.html'));
+  } else {
+    res.redirect('/connexion');
+  }
+});
+
+
+app.get('/secretaire/patients', isAuthenticated, (req, res) => {
+  if (req.session.user.role === 'Secretaire') {
+    res.sendFile(path.join(__dirname, 'secretaire/patients.html'));
+  } else {
+    res.redirect('/connexion');
+  }
+});
+
+app.get('/secretaire/medecins', isAuthenticated, (req, res) => {
+  if (req.session.user.role === 'Secretaire') {
+    res.sendFile(path.join(__dirname, 'secretaire/medecins.html'));
+  } else {
+    res.redirect('/connexion');
+  }
+});
 
 app.listen(PORT, () => {
     console.log(`Serveur démarré sur http://localhost:${PORT}`);
