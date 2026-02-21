@@ -220,6 +220,14 @@ app.get('/secretaire/medecins', isAuthenticated, (req, res) => {
   }
 });
 
+app.get('/secretaire/parametres', isAuthenticated, (req, res) => {
+  if (req.session.user.role === 'Secretaire') {
+    res.sendFile(path.join(__dirname, 'secretaire/parametres.html'));
+  } else {
+    res.redirect('/connexion');
+  }
+});
+
 app.listen(PORT, () => {
     console.log(`Serveur démarré sur http://localhost:${PORT}`);
 });

@@ -146,6 +146,70 @@ router.get('/api/secretaire/medecin/delete/:idUser', async (req, res) => {
   }
 });
 
+const bcrypt = require('bcrypt');
+const multer = require('multer');
+const path = require('path');
+
+// Config multer pour upload photo
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '../images'));
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = Date.now() + '-' + file.originalname;
+    cb(null, uniqueName);
+  }
+});
+const upload = multer({ storage });
+
+// Mise à jour infos secrétaire
+router.post('/api/secretaire/update', upload.single('photoProfil'), async (req, res) => {
+  try {
+    const prenom = req.body.prenom || req.session.user.prenom;
+    const nom = req.body.nom || req.session.user.nom;
+    const login = req.body.login || req.session.user.login;
+    const photoProfil = req.file ? req.file.filename : (req.session.user.photoProfil || 'default.png');
+
+    await db.query(
+      "UPDATE Utilisateur SET prenom=?, nom=?, login=?, photoProfil=? WHERE idUser=?",
+      [prenom, nom, login, photoProfil, req.session.user.id]
+    );
+
+    req.session.user.prenom = prenom;
+    req.session.user.nom = nom;
+    req.session.user.login = login;
+    req.session.user.photoProfil = photoProfil;
+
+    res.redirect('/secretaire/parametres');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur serveur");
+  }
+});
+
+// Changement mot de passe secrétaire
+router.post('/api/secretaire/change-password', async (req, res) => {
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    const [rows] = await db.query("SELECT * FROM Utilisateur WHERE idUser=?", [req.session.user.id]);
+    const user = rows[0];
+
+    const match = await bcrypt.compare(currentPassword, user.password);
+    if (!match) return res.send("Mot de passe actuel incorrect");
+
+    if (newPassword !== confirmPassword) return res.send("Les mots de passe ne correspondent pas");
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+    await db.query("UPDATE Utilisateur SET password=? WHERE idUser=?", [hashed, req.session.user.id]);
+
+    res.send("Mot de passe changé avec succès");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Erreur serveur");
+  }
+});
+
 
   return router;
 };
