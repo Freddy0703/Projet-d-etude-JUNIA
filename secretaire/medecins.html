@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestion des Médecins · Secrétaire</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome 6 pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #f4f7fc;
+      padding: 30px 20px;
+    }
+
+    .container-custom {
+      max-width: 1300px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 40px;
+      padding: 30px 35px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 140, 66, 0.15);
+    }
+
+    /* En-tête avec bouton retour */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .header-actions h3 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #1e1e2f 0%, #ff8c42 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .btn-dashboard {
+      background: white;
+      border: 2px solid #ff8c42;
+      color: #ff8c42;
+      border-radius: 60px;
+      padding: 12px 28px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      transition: 0.2s;
+      box-shadow: 0 4px 12px rgba(255, 140, 66, 0.15);
+    }
+
+    .btn-dashboard:hover {
+      background: #ff8c42;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(255, 140, 66, 0.3);
+    }
+
+    /* Formulaire d'ajout médecin */
+    .form-card {
+      background: #f9fafe;
+      border-radius: 32px;
+      padding: 30px;
+      margin: 30px 0 40px;
+      border: 1px solid rgba(255, 140, 66, 0.3);
+      box-shadow: 0 15px 30px -10px rgba(255, 140, 66, 0.1);
+    }
+
+    .form-card h4 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: #1e1e2f;
+      margin-bottom: 25px;
+    }
+
+    .form-card h4 i {
+      background: #ff8c42;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 20px;
+      font-size: 1.2rem;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #2a3a55;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .form-control {
+      border: 2px solid #e9edf4;
+      border-radius: 18px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      transition: 0.15s;
+      background: white;
+    }
+
+    .form-control:focus {
+      border-color: #ff8c42;
+      box-shadow: 0 0 0 4px rgba(255, 140, 66, 0.15);
+      outline: none;
+    }
+
+    .btn-submit {
+      background: #ff8c42;
+      border: none;
+      border-radius: 60px;
+      padding: 14px 40px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 20px -5px #ff8c42;
+      transition: 0.2s;
+      margin-top: 10px;
+      border: 2px solid transparent;
+    }
+
+    .btn-submit:hover {
+      background: #ff6f1a;
+      transform: translateY(-3px);
+      box-shadow: 0 20px 30px -8px #ff8c42;
+    }
+
+    /* Section recherche */
+    .search-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 30px 0 25px;
+      flex-wrap: wrap;
+    }
+
+    .search-wrapper {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-wrapper i {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ff8c42;
+      font-size: 1.2rem;
+    }
+
+    #searchInput {
+      border-radius: 60px;
+      padding: 16px 30px 16px 55px;
+      border: 2px solid #eef2f7;
+      background: white;
+      font-size: 1rem;
+      width: 100%;
+      transition: 0.2s;
+    }
+
+    #searchInput:focus {
+      border-color: #ff8c42;
+      box-shadow: 0 8px 18px rgba(255, 140, 66, 0.2);
+    }
+
+    /* Tableau des médecins */
+    .table-modern {
+      border-radius: 28px;
+      overflow: hidden;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+      margin: 0;
+    }
+
+    .table-modern thead th {
+      background: #f0f4fe;
+      color: #1e2b41;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 18px 16px;
+      border: none;
+      border-bottom: 3px solid #ff8c42;
+    }
+
+    .table-modern tbody tr {
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.02);
+      transition: 0.2s;
+    }
+
+    .table-modern tbody tr:hover {
+      background: #fff9f2;
+      box-shadow: 0 12px 24px -8px rgba(255, 140, 66, 0.2);
+      transform: scale(1.003);
+    }
+
+    .table-modern td {
+      padding: 18px 16px;
+      vertical-align: middle;
+      border: none;
+      color: #2b3d5c;
+      font-weight: 500;
+    }
+
+    .table-modern td:first-child {
+      border-radius: 20px 0 0 20px;
+    }
+
+    .table-modern td:last-child {
+      border-radius: 0 20px 20px 0;
+    }
+
+    /* Badge médecin */
+    .badge-medecin {
+      background: #ff8c4215;
+      color: #ff8c42;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      border: 1px solid #ff8c4250;
+      display: inline-block;
+    }
+
+    /* Formulaire inline d'édition */
+    .edit-form {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      background: #f8fafd;
+      padding: 8px 12px;
+      border-radius: 60px;
+      border: 1px solid #eaeef5;
+    }
+
+    .edit-input {
+      border: 1px solid #dde3ec;
+      border-radius: 30px;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      min-width: 90px;
+      background: white;
+    }
+
+    .edit-input:focus {
+      border-color: #ff8c42;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255,140,66,0.2);
+    }
+
+    .btn-edit-submit {
+      background: #ff8c42;
+      border: none;
+      border-radius: 40px;
+      padding: 8px 18px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: 0.1s;
+    }
+
+    .btn-edit-submit:hover {
+      background: #e96e00;
+    }
+
+    .btn-delete {
+      background: #ffe8e8;
+      color: #d14545;
+      border-radius: 40px;
+      padding: 8px 18px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid #ffb3b3;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.1s;
+      margin-left: 5px;
+    }
+
+    .btn-delete:hover {
+      background: #d14545;
+      color: white;
+      border-color: #d14545;
+    }
+
+    /* Message information mot de passe */
+    .password-note {
+      background: #fff4e9;
+      border-radius: 16px;
+      padding: 8px 16px;
+      color: #8a6e4b;
+      font-size: 0.8rem;
+      border: 1px solid #ffd9b5;
+      margin-top: 10px;
+    }
+
+    .password-note i {
+      color: #ff8c42;
+    }
+
+    footer {
+      margin-top: 30px;
+      text-align: right;
+      color: #abb9cc;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-custom">
+  <!-- Header avec bouton retour vers /secretaire/medecins comme demandé -->
+  <div class="header-actions">
+    <h3><i class="fas fa-user-md" style="color: #ff8c42; margin-right: 10px;"></i> Gestion des Médecins</h3>
+    <a href="/secretaire/dashboard" class="btn-dashboard">
+      <i class="fas fa-arrow-left"></i> Retour au dashboard
+    </a>
+  </div>
+
+  <!-- Formulaire d'ajout médecin (backend strictement inchangé) -->
+  <div class="form-card">
+    <h4><i class="fas fa-plus-circle"></i> Ajouter un nouveau médecin</h4>
+    <form action="/api/secretaire/medecin/add" method="POST">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <label for="prenom" class="form-label"><i class="far fa-user" style="margin-right: 6px; color:#ff8c42;"></i>Prénom</label>
+          <input type="text" class="form-control" id="prenom" name="prenom" placeholder="ex: Sophie" required>
+        </div>
+        <div class="col-md-6">
+          <label for="nom" class="form-label"><i class="far fa-user" style="margin-right: 6px; color:#ff8c42;"></i>Nom</label>
+          <input type="text" class="form-control" id="nom" name="nom" placeholder="ex: Martin" required>
+        </div>
+        <div class="col-md-6">
+          <label for="login" class="form-label"><i class="fas fa-envelope" style="margin-right: 6px; color:#ff8c42;"></i>Login (Email)</label>
+          <input type="email" class="form-control" id="login" name="login" placeholder="s.martin@hopital.fr" required>
+        </div>
+        <div class="col-md-6">
+          <label for="password" class="form-label"><i class="fas fa-lock" style="margin-right: 6px; color:#ff8c42;"></i>Mot de passe</label>
+          <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
+        </div>
+      </div>
+      <div class="password-note">
+        <i class="fas fa-info-circle"></i> Le mot de passe doit contenir au moins 8 caractères
+      </div>
+      <div class="text-end mt-4">
+        <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Enregistrer médecin</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Section recherche -->
+  <div class="search-section">
+    <div class="search-wrapper">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Rechercher par nom ou prénom...">
+    </div>
+    <span class="text-muted-small" id="medecinCount"></span>
+  </div>
+
+  <!-- Tableau des médecins -->
+  <table class="table-modern table">
+    <thead>
+      <tr>
+        <th>Prénom</th>
+        <th>Nom</th>
+        <th>Login</th>
+        <th style="min-width: 350px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="medecinsTable"></tbody>
+  </table>
+  <footer>
+    <i class="fas fa-shield-alt" style="color: #ff8c42;"></i> Accès sécurisé · Profils médecins
+  </footer>
+</div>
+
+<script>
+  let allMedecins = [];
+
+  // Charger médecins (strictement identique à l'original)
+  fetch('/api/secretaire/medecins')
+    .then(res => res.json())
+    .then(data => {
+      allMedecins = data;
+      renderTable(allMedecins);
+      updateCounter(allMedecins.length);
+    });
+
+  function renderTable(medecins) {
+    const table = document.getElementById('medecinsTable');
+    table.innerHTML = '';
+    medecins.forEach(m => {
+      // On génère une ligne élégante mais avec les mêmes inputs/names pour le backend
+      table.innerHTML += `
+        <tr>
+          <td><strong>${m.prenom}</strong></td>
+          <td><strong>${m.nom}</strong></td>
+          <td><span class="badge-medecin"><i class="fas fa-envelope" style="margin-right: 5px;"></i>${m.login}</span></td>
+          <td>
+            <!-- Formulaire de modification inline (exacte même structure que l'original) -->
+            <form action="/api/secretaire/medecin/edit/${m.idUser}" method="POST" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+              <input type="text" name="prenom" value="${m.prenom}" class="edit-input" placeholder="Prénom" required>
+              <input type="text" name="nom" value="${m.nom}" class="edit-input" placeholder="Nom" required>
+              <input type="email" name="login" value="${m.login}" class="edit-input" placeholder="Email" style="min-width: 160px;">
+              <button type="submit" class="btn-edit-submit"><i class="fas fa-check"></i> Modifier</button>
+            </form>
+            <a href="/api/secretaire/medecin/delete/${m.idUser}" class="btn-delete" onclick="return confirm('Supprimer ce médecin ?');"><i class="fas fa-trash-alt"></i> Supprimer</a>
+          </td>
+        </tr>
+      `;
+    });
+    updateCounter(medecins.length);
+  }
+
+  function updateCounter(nb) {
+    const span = document.getElementById('medecinCount');
+    if (span) span.innerText = nb + ' médecin(s) affiché(s)';
+  }
+
+  // Recherche en direct (strictement identique)
+  document.getElementById('searchInput').addEventListener('input', function() {
+    const value = this.value.toLowerCase();
+    const filtered = allMedecins.filter(m => 
+      m.nom.toLowerCase().includes(value) || m.prenom.toLowerCase().includes(value)
+    );
+    renderTable(filtered);
+  });
+</script>
+<!-- Aucune modification des endpoints backend -->
+</body>
+</html>

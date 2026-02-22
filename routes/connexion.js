@@ -4,12 +4,10 @@ const bcrypt = require('bcrypt');
 module.exports = (db) => {
     const router = express.Router();
 
-    // Affichage du formulaire
     router.get('/', (req, res) => {
         res.sendFile('connexion.html', { root: 'public' });
     });
 
-    // Traitement du formulaire
     router.post('/', async (req, res) => {
         const { login, password } = req.body;
 
@@ -22,7 +20,7 @@ module.exports = (db) => {
 
             const user = rows[0];
 
-            // Correction : transformer $2y$ en $2b$ pour compatibilité NodeJS
+
             const hash = user.password.replace(/^\$2y\$/, '$2b$');
 
             const match = await bcrypt.compare(password, hash);
@@ -31,7 +29,6 @@ module.exports = (db) => {
                 return res.send("Mot de passe incorrect");
             }
 
-            // Stocker l’utilisateur en session
             req.session.user = {
                 id: user.idUser,
                 role: user.role,
@@ -42,7 +39,6 @@ module.exports = (db) => {
             };
 
 
-            // Redirection selon le rôle
             if (user.role === 'Administrateur') {
                 res.redirect('/administrateur/dashboard');
             } else if (user.role === 'Secretaire') {

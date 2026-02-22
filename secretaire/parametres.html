@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Paramètres · Secrétaire</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome 6 pour les icônes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #f4f7fc;
+      padding: 30px 20px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container-custom {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Carte principale */
+    .settings-card {
+      background: white;
+      border-radius: 48px;
+      padding: 40px 45px;
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 140, 66, 0.2);
+    }
+
+    /* En-tête avec bouton retour */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .header-actions h3 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #1e1e2f 0%, #ff8c42 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .btn-dashboard {
+      background: white;
+      border: 2px solid #ff8c42;
+      color: #ff8c42;
+      border-radius: 60px;
+      padding: 12px 28px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      transition: 0.2s;
+      box-shadow: 0 4px 12px rgba(255, 140, 66, 0.15);
+    }
+
+    .btn-dashboard:hover {
+      background: #ff8c42;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(255, 140, 66, 0.3);
+    }
+
+    /* Carte profil */
+    .profile-card {
+      background: #f9fafe;
+      border-radius: 32px;
+      padding: 30px;
+      margin-bottom: 35px;
+      border: 1px solid rgba(255, 140, 66, 0.3);
+      box-shadow: 0 15px 30px -10px rgba(255, 140, 66, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .profile-pic-wrapper {
+      position: relative;
+    }
+
+    .profile-pic {
+      border-radius: 40px;
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border: 5px solid #ff8c42;
+      box-shadow: 0 20px 30px -8px rgba(255, 140, 66, 0.4);
+      transition: 0.2s;
+    }
+
+    .profile-pic:hover {
+      transform: scale(1.02);
+    }
+
+    .profile-info h5 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1e1e2f;
+      margin-bottom: 8px;
+    }
+
+    .profile-info p {
+      color: #5a6e8a;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .profile-info p i {
+      color: #ff8c42;
+      width: 24px;
+    }
+
+    .badge-role {
+      background: #ff8c42;
+      color: white;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 60px;
+      font-size: 0.9rem;
+      display: inline-block;
+      box-shadow: 0 6px 12px rgba(255, 140, 66, 0.3);
+    }
+
+    /* Sections formulaire */
+    .form-section {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 1px solid #f0e4d8;
+      box-shadow: 0 10px 25px -8px rgba(0,0,0,0.05);
+    }
+
+    .form-section h4 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: #1e1e2f;
+      margin-bottom: 25px;
+      font-size: 1.5rem;
+    }
+
+    .form-section h4 i {
+      background: #ff8c42;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 20px;
+      font-size: 1.2rem;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #2a3a55;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .form-control {
+      border: 2px solid #e9edf4;
+      border-radius: 20px;
+      padding: 14px 20px;
+      font-size: 1rem;
+      transition: 0.15s;
+      background: #fbfdff;
+    }
+
+    .form-control:focus {
+      border-color: #ff8c42;
+      box-shadow: 0 0 0 4px rgba(255, 140, 66, 0.15);
+      outline: none;
+      background: white;
+    }
+
+    .form-control[type="file"] {
+      padding: 10px;
+      background: #f5f7fb;
+    }
+
+    /* Boutons */
+    .btn-update {
+      background: #ff8c42;
+      border: none;
+      border-radius: 60px;
+      padding: 14px 40px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 20px -5px #ff8c42;
+      transition: 0.2s;
+      border: 2px solid transparent;
+    }
+
+    .btn-update:hover {
+      background: #ff6f1a;
+      transform: translateY(-3px);
+      box-shadow: 0 20px 30px -8px #ff8c42;
+    }
+
+    .btn-password {
+      background: #2a3a55;
+      border: none;
+      border-radius: 60px;
+      padding: 14px 40px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 18px rgba(42, 58, 85, 0.3);
+      transition: 0.2s;
+    }
+
+    .btn-password:hover {
+      background: #1e2b41;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px -5px #2a3a55;
+    }
+
+    .password-note {
+      background: #fff4e9;
+      border-radius: 20px;
+      padding: 12px 20px;
+      color: #8a6e4b;
+      font-size: 0.9rem;
+      border: 1px solid #ffd9b5;
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .password-note i {
+      color: #ff8c42;
+      font-size: 1.2rem;
+    }
+
+    hr {
+      border: none;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ff8c42, transparent);
+      margin: 30px 0;
+    }
+
+    /* Footer */
+    .footer-note {
+      text-align: center;
+      color: #abb9cc;
+      font-size: 0.85rem;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-custom">
+  <div class="settings-card">
+    <!-- En-tête avec retour dashboard -->
+    <div class="header-actions">
+      <h3><i class="fas fa-sliders-h" style="color: #ff8c42; margin-right: 10px;"></i> Paramètres</h3>
+      <a href="/secretaire/dashboard" class="btn-dashboard">
+        <i class="fas fa-arrow-left"></i> Retour Dashboard
+      </a>
+    </div>
+
+    <!-- Carte Profil (affichage des infos) -->
+    <div class="profile-card">
+      <div class="profile-pic-wrapper">
+        <img id="photoProfilDisplay" src="/images/default.png" alt="Photo de profil" class="profile-pic">
+      </div>
+      <div class="profile-info">
+        <h5 id="nomComplet">Chargement...</h5>
+        <p><i class="fas fa-envelope"></i> <span id="email"></span></p>
+        <p><i class="fas fa-badge-check"></i> <span id="role" class="badge-role"></span></p>
+      </div>
+    </div>
+
+    <!-- Formulaire mise à jour infos (backend intact) -->
+    <div class="form-section">
+      <h4><i class="fas fa-user-edit"></i> Modifier mes informations</h4>
+      <form action="/api/secretaire/update" method="POST" enctype="multipart/form-data">
+        <div class="row g-4">
+          <div class="col-md-6">
+            <label for="prenom" class="form-label"><i class="fas fa-user" style="color: #ff8c42; margin-right: 6px;"></i>Prénom</label>
+            <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Votre prénom">
+          </div>
+          <div class="col-md-6">
+            <label for="nom" class="form-label"><i class="fas fa-user" style="color: #ff8c42; margin-right: 6px;"></i>Nom</label>
+            <input type="text" class="form-control" id="nom" name="nom" placeholder="Votre nom">
+          </div>
+          <div class="col-md-12">
+            <label for="login" class="form-label"><i class="fas fa-envelope" style="color: #ff8c42; margin-right: 6px;"></i>Email / Login</label>
+            <input type="email" class="form-control" id="login" name="login" placeholder="email@exemple.com">
+          </div>
+          <div class="col-md-12">
+            <label for="photoProfil" class="form-label"><i class="fas fa-camera" style="color: #ff8c42; margin-right: 6px;"></i>Photo de profil</label>
+            <input type="file" class="form-control" id="photoProfil" name="photoProfil" accept="image/*">
+            <small class="text-muted">Formats acceptés : JPG, PNG, GIF (max 2 Mo)</small>
+          </div>
+        </div>
+        <div class="text-end mt-4">
+          <button type="submit" class="btn-update"><i class="fas fa-save"></i> Mettre à jour</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Séparateur élégant -->
+    <hr>
+
+    <!-- Formulaire changement mot de passe -->
+    <div class="form-section" style="background: #fbfafe;">
+      <h4><i class="fas fa-lock"></i> Changer mon mot de passe</h4>
+      <form action="/api/secretaire/change-password" method="POST">
+        <div class="row g-4">
+          <div class="col-md-12">
+            <label for="currentPassword" class="form-label"><i class="fas fa-key" style="color: #ff8c42;"></i> Mot de passe actuel</label>
+            <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="••••••••" required>
+          </div>
+          <div class="col-md-6">
+            <label for="newPassword" class="form-label"><i class="fas fa-lock" style="color: #ff8c42;"></i> Nouveau mot de passe</label>
+            <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Minimum 8 caractères" required>
+          </div>
+          <div class="col-md-6">
+            <label for="confirmPassword" class="form-label"><i class="fas fa-check-circle" style="color: #ff8c42;"></i> Confirmer</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirmation" required>
+          </div>
+        </div>
+
+        <div class="password-note">
+          <i class="fas fa-shield-alt"></i>
+          <span>Le mot de passe doit contenir au moins 8 caractères, dont une majuscule, un chiffre et un caractère spécial.</span>
+        </div>
+
+        <div class="text-end mt-4">
+          <button type="submit" class="btn-password"><i class="fas fa-sync-alt"></i> Changer le mot de passe</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Petite note de sécurité -->
+    <div class="footer-note">
+      <i class="fas fa-shield" style="color: #ff8c42;"></i> Toutes les modifications sont sécurisées et enregistrées immédiatement
+    </div>
+  </div>
+</div>
+
+<script>
+  // Charger infos secrétaire (strictement identique à l'original)
+  fetch('/api/secretaire/profile')
+    .then(res => res.json())
+    .then(data => {
+      // Mise à jour de l'affichage
+      document.getElementById('photoProfilDisplay').src = "/images/" + (data.photoProfil || 'default.png');
+      document.getElementById('nomComplet').innerText = data.prenom + " " + data.nom;
+      document.getElementById('email').innerText = data.login;
+      document.getElementById('role').innerText = data.role || 'Secrétaire';
+
+      // Remplissage des champs du formulaire (pour modification)
+      document.getElementById('prenom').value = data.prenom || '';
+      document.getElementById('nom').value = data.nom || '';
+      document.getElementById('login').value = data.login || '';
+    })
+    .catch(err => {
+      console.error('Erreur chargement profil', err);
+      document.getElementById('nomComplet').innerText = 'Non disponible';
+    });
+</script>
+<!-- Aucune modification des endpoints backend : tout fonctionne comme avant -->
+</body>
+</html>

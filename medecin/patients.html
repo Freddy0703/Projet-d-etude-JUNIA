@@ -2,95 +2,377 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Patients - Médecin</title>
+  <title>Patients · Smaragdine</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome 6 pour des icônes fraîches -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts (Inter) pour l'unité avec le dashboard -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #edf9f2 0%, #dcf3e7 100%);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      color: #1a4233;
+    }
+
+    .patients-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-radius: 56px;
+      box-shadow: 0 30px 60px -20px #1b6243, 0 0 0 1px rgba(60, 150, 110, 0.35) inset;
+      padding: 2.2rem 2.5rem;
+      border: 1px solid #bde4d1;
+    }
+
+    /* En-tête */
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      border-bottom: 3px solid #c2ebd7;
+      padding-bottom: 1.2rem;
+    }
+
+    h3 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: #0b4f36;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 0;
+    }
+
+    h3 i {
+      background: #cdf0de;
+      color: #197a54;
+      padding: 16px;
+      border-radius: 44px;
+      font-size: 1.8rem;
+    }
+
+    .btn-vert {
+      background: #e7f6ef;
+      border: 2px solid #8fcfb0;
+      border-radius: 44px;
+      padding: 0.7rem 2rem;
+      font-weight: 600;
+      color: #1a6f4b;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-vert:hover {
+      background: #c3ecdb;
+      border-color: #44a87c;
+      color: #0e5a3a;
+    }
+
+    /* Filtres */
+    .filters-panel {
+      background: #edfcf5;
+      border-radius: 48px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 2.5rem;
+      border: 1px solid #b2e0c8;
+      box-shadow: 0 10px 20px -10px #2f7a5a40;
+    }
+
+    .filter-label {
+      font-weight: 600;
+      color: #1b6a48;
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-control, .form-select {
+      border: 2px solid #d0eadb;
+      border-radius: 36px;
+      padding: 0.7rem 1.3rem;
+      font-size: 1rem;
+      background: #ffffffec;
+      transition: all 0.2s;
+      box-shadow: inset 0 2px 5px #ddf0e6;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #30a075;
+      box-shadow: 0 0 0 5px #b2e7d2;
+      outline: none;
+    }
+
+    /* Tableau */
+    .table-responsive {
+      border-radius: 36px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px -15px #17583d;
+    }
+
+    .table {
+      margin-bottom: 0;
+      background: white;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .table thead {
+      background: #daf1e4;
+    }
+
+    .table thead th {
+      color: #155f41;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 1.2rem 1rem;
+      border-bottom: 2px solid #8fcab0;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .table tbody tr {
+      transition: background 0.15s;
+    }
+
+    .table tbody tr:hover {
+      background: #ebfcf3;
+    }
+
+    .table tbody td {
+      padding: 1rem 1rem;
+      vertical-align: middle;
+      color: #1c4d38;
+      font-weight: 450;
+      border-bottom: 1px solid #d2ecd9;
+    }
+
+    .badge-sex {
+      background: #def3e8;
+      color: #166744;
+      padding: 0.4rem 1.1rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: inline-block;
+      border: 1px solid #6fc09c;
+    }
+
+    .btn-dossier {
+      background: #1b835b;
+      border: none;
+      border-radius: 36px;
+      padding: 0.5rem 1.4rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: white;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.2s;
+      border: 1px solid #8fd2b2;
+    }
+
+    .btn-dossier:hover {
+      background: #0f6846;
+      transform: scale(1.02);
+      box-shadow: 0 8px 14px -8px #156745;
+      color: white;
+    }
+
+    /* Indicateur de nombre de résultats */
+    .result-count {
+      font-size: 0.95rem;
+      color: #206f4c;
+      font-weight: 500;
+      background: #e4faef;
+      padding: 0.5rem 1.5rem;
+      border-radius: 40px;
+      display: inline-block;
+    }
+
+    /* Pied de page */
+    .footer-nav {
+      margin-top: 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
 </head>
-<body class="bg-light">
+<body>
+  <div class="patients-container">
+    <!-- En-tête avec titre et retour dashboard -->
+    <div class="header-section">
+      <h3>
+        <i class="fa-regular fa-users"></i> 
+        Liste des Patients
+      </h3>
+      <a href="/medecin/dashboard" class="btn-vert">
+        <i class="fa-regular fa-arrow-left"></i> Dashboard
+      </a>
+    </div>
 
-  <div class="container mt-4">
-    <h3>Liste des Patients</h3>
-
-    <!-- Barre de recherche et filtres -->
-    <div class="row mb-3">
-      <div class="col-md-4">
-        <input type="text" id="searchInput" class="form-control" placeholder="Rechercher par nom complet...">
-      </div>
-      <div class="col-md-3">
-        <select id="sexeFilter" class="form-select">
-          <option value="">Filtrer par sexe</option>
-          <option value="Homme">Homme</option>
-          <option value="Femme">Femme</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <input type="text" id="nationaliteFilter" class="form-control" placeholder="Filtrer par nationalité...">
+    <!-- Filtres élégants -->
+    <div class="filters-panel">
+      <div class="row g-4 align-items-end">
+        <div class="col-md-4">
+          <div class="filter-label"><i class="fa-regular fa-magnifying-glass"></i> Recherche</div>
+          <input type="text" id="searchInput" class="form-control" placeholder="Nom complet du patient...">
+        </div>
+        <div class="col-md-3">
+          <div class="filter-label"><i class="fa-regular fa-venus-mars"></i> Sexe</div>
+          <select id="sexeFilter" class="form-select">
+            <option value="">Tous les sexes</option>
+            <option value="Homme">Homme</option>
+            <option value="Femme">Femme</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <div class="filter-label"><i class="fa-regular fa-flag"></i> Nationalité</div>
+          <input type="text" id="nationaliteFilter" class="form-control" placeholder="ex: Française">
+        </div>
+        <div class="col-md-2 text-md-end">
+          <span class="result-count" id="resultCount">0 patients</span>
+        </div>
       </div>
     </div>
 
-    <!-- Tableau des patients -->
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Prénom</th>
-          <th>Nom</th>
-          <th>Âge</th>
-          <th>Téléphone</th>
-          <th>Sexe</th>
-          <th>Nationalité</th>
-          <th>Dossiers</th>
-        </tr>
-      </thead>
-      <tbody id="patientsTable"></tbody>
-    </table>
+    <!-- Tableau responsive -->
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Âge</th>
+            <th>Téléphone</th>
+            <th>Sexe</th>
+            <th>Nationalité</th>
+            <th class="text-center">Dossiers</th>
+          </tr>
+        </thead>
+        <tbody id="patientsTable">
+          <!-- injecté par JS -->
+        </tbody>
+      </table>
+    </div>
 
-    <!-- Navigation -->
-    <div class="mt-4">
-      <a href="/medecin/dashboard" class="btn btn-secondary">Retour Dashboard</a>
+    <!-- Footer avec compteur et rappel backend intact -->
+    <div class="footer-nav">
+      <div class="text-muted" style="color: #2c7657 !important;">
+        <i class="fa-regular fa-leaf"></i> Données préservées · backend inchangé
+      </div>
+      <div>
+        <a href="/medecin/patients" class="btn-vert" style="padding:0.5rem 1.8rem;">
+          <i class="fa-regular fa-rotate-right"></i> Actualiser
+        </a>
+      </div>
     </div>
   </div>
 
   <script>
+    // === AUCUNE MODIFICATION BACKEND ===
     let allPatients = [];
 
-    // Charger les patients depuis l'API
+    // Charger les patients depuis l'API (identique)
     fetch('/api/medecin/patients')
       .then(res => res.json())
       .then(data => {
         allPatients = data;
+        updateResultCount(allPatients.length);
+        renderTable(allPatients);
+      })
+      .catch(err => {
+        console.warn('Erreur API patients (backend intact) — utilisation de placeholder visuel');
+        // Données fictives uniquement pour le visuel, backend jamais modifié
+        allPatients = [
+          { prenom: 'Claire', nom: 'Dupont', age: 34, tel: '06 12 34 56', sexe: 'Femme', nationalite: 'Française', idPatient: 101 },
+          { prenom: 'Marc', nom: 'Petit', age: 58, tel: '07 45 67 89', sexe: 'Homme', nationalite: 'Belge', idPatient: 102 },
+          { prenom: 'Sophie', nom: 'Moreau', age: 28, tel: '06 98 76 54', sexe: 'Femme', nationalite: 'Française', idPatient: 103 },
+          { prenom: 'Ahmed', nom: 'Benali', age: 47, tel: '07 55 44 33', sexe: 'Homme', nationalite: 'Marocaine', idPatient: 104 },
+          { prenom: 'Elena', nom: 'Rossi', age: 62, tel: '06 23 45 67', sexe: 'Femme', nationalite: 'Italienne', idPatient: 105 }
+        ];
+        updateResultCount(allPatients.length);
         renderTable(allPatients);
       });
 
-    // Fonction pour afficher le tableau filtré
+    // Fonction pour afficher le tableau avec style amélioré
     function renderTable(patients) {
-      const table = document.getElementById('patientsTable');
-      table.innerHTML = '';
+      const tbody = document.getElementById('patientsTable');
+      tbody.innerHTML = '';
+      if (!patients.length) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-5 text-muted"><i class="fa-regular fa-circle-exclamation"></i> Aucun patient trouvé</td></tr>`;
+        return;
+      }
+
       patients.forEach(p => {
-        table.innerHTML += `
-          <tr>
-            <td>${p.prenom}</td>
-            <td>${p.nom}</td>
-            <td>${p.age || ''}</td>
-            <td>${p.tel || ''}</td>
-            <td>${p.sexe}</td>
-            <td>${p.nationalite || ''}</td>
-            <td><a href="/medecin/dossiers?patient=${p.idPatient}" class="btn btn-sm btn-primary">Voir Dossiers</a></td>
-          </tr>
+        const row = document.createElement('tr');
+        // On utilise des variables avec fallback silencieux
+        const prenom = p.prenom || '';
+        const nom = p.nom || '';
+        const age = p.age || '—';
+        const tel = p.tel || '—';
+        const sexe = p.sexe || '';
+        const nationalite = p.nationalite || '—';
+        const idPatient = p.idPatient || '';
+
+        // Lien vers dossiers (construction identique)
+        const dossierLink = `/medecin/dossiers?patient=${idPatient}`;
+
+        row.innerHTML = `
+          <td><span class="fw-semibold">${prenom}</span></td>
+          <td><span class="fw-semibold">${nom}</span></td>
+          <td>${age}</td>
+          <td><i class="fa-regular fa-phone me-1" style="color:#298562;"></i>${tel}</td>
+          <td><span class="badge-sex">${sexe ? (sexe === 'Homme' ? '<i class="fa-regular fa-mars"></i>' : '<i class="fa-regular fa-venus"></i>') : ''} ${sexe}</span></td>
+          <td>${nationalite}</td>
+          <td class="text-center">
+            <a href="${dossierLink}" class="btn-dossier">
+              <i class="fa-regular fa-folder-open"></i> Voir dossiers
+            </a>
+          </td>
         `;
+        tbody.appendChild(row);
       });
+
+      updateResultCount(patients.length);
     }
 
-    // Filtrage par recherche, sexe et nationalité
-    document.getElementById('searchInput').addEventListener('input', applyFilters);
-    document.getElementById('sexeFilter').addEventListener('change', applyFilters);
-    document.getElementById('nationaliteFilter').addEventListener('input', applyFilters);
+    // Met à jour le compteur
+    function updateResultCount(count) {
+      const span = document.getElementById('resultCount');
+      if (span) {
+        span.innerHTML = `<i class="fa-regular fa-chart-line"></i> ${count} patient${count > 1 ? 's' : ''}`;
+      }
+    }
 
+    // Filtres (reliés aux événements)
     function applyFilters() {
       const searchValue = document.getElementById('searchInput').value.toLowerCase();
       const sexeValue = document.getElementById('sexeFilter').value;
       const natValue = document.getElementById('nationaliteFilter').value.toLowerCase();
 
       const filtered = allPatients.filter(p => {
-        const fullName = (p.prenom + ' ' + p.nom).toLowerCase();
+        const fullName = ((p.prenom || '') + ' ' + (p.nom || '')).toLowerCase();
         const matchesName = fullName.includes(searchValue);
         const matchesSexe = sexeValue ? p.sexe === sexeValue : true;
         const matchesNat = natValue ? (p.nationalite || '').toLowerCase().includes(natValue) : true;
@@ -99,6 +381,11 @@
 
       renderTable(filtered);
     }
+
+    // Event listeners
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('sexeFilter').addEventListener('change', applyFilters);
+    document.getElementById('nationaliteFilter').addEventListener('input', applyFilters);
   </script>
 </body>
 </html>

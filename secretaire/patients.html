@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestion des Patients · Secrétaire</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome 6 pour icônes modernes -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #f4f7fc;
+      padding: 30px 20px;
+    }
+
+    .container-custom {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 40px;
+      padding: 30px 35px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 140, 66, 0.15);
+    }
+
+    /* En-tête avec bouton retour */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .header-actions h3 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #1e1e2f 0%, #ff8c42 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .btn-dashboard {
+      background: white;
+      border: 2px solid #ff8c42;
+      color: #ff8c42;
+      border-radius: 60px;
+      padding: 12px 28px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      transition: 0.2s;
+      box-shadow: 0 4px 12px rgba(255, 140, 66, 0.15);
+    }
+
+    .btn-dashboard:hover {
+      background: #ff8c42;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(255, 140, 66, 0.3);
+    }
+
+    /* Formulaire d'ajout ultra moderne */
+    .form-card {
+      background: #f9fafe;
+      border-radius: 32px;
+      padding: 30px;
+      margin: 30px 0 40px;
+      border: 1px solid rgba(255, 140, 66, 0.3);
+      box-shadow: 0 15px 30px -10px rgba(255, 140, 66, 0.1);
+    }
+
+    .form-card h4 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: #1e1e2f;
+      margin-bottom: 25px;
+    }
+
+    .form-card h4 i {
+      background: #ff8c42;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 20px;
+      font-size: 1.2rem;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #2a3a55;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .form-control, .form-select {
+      border: 2px solid #e9edf4;
+      border-radius: 18px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      transition: 0.15s;
+      background: white;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #ff8c42;
+      box-shadow: 0 0 0 4px rgba(255, 140, 66, 0.15);
+      outline: none;
+    }
+
+    .btn-submit {
+      background: #ff8c42;
+      border: none;
+      border-radius: 60px;
+      padding: 14px 40px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 20px -5px #ff8c42;
+      transition: 0.2s;
+      margin-top: 10px;
+      border: 2px solid transparent;
+    }
+
+    .btn-submit:hover {
+      background: #ff6f1a;
+      transform: translateY(-3px);
+      box-shadow: 0 20px 30px -8px #ff8c42;
+    }
+
+    /* Barre de recherche stylisée */
+    .search-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 30px 0 25px;
+      flex-wrap: wrap;
+    }
+
+    .search-wrapper {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-wrapper i {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ff8c42;
+      font-size: 1.2rem;
+    }
+
+    #searchInput {
+      border-radius: 60px;
+      padding: 16px 30px 16px 55px;
+      border: 2px solid #eef2f7;
+      background: white;
+      font-size: 1rem;
+      width: 100%;
+      transition: 0.2s;
+    }
+
+    #searchInput:focus {
+      border-color: #ff8c42;
+      box-shadow: 0 8px 18px rgba(255, 140, 66, 0.2);
+    }
+
+    /* Tableau de patients */
+    .table-modern {
+      border-radius: 28px;
+      overflow: hidden;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+      margin: 0;
+    }
+
+    .table-modern thead th {
+      background: #f0f4fe;
+      color: #1e2b41;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 18px 16px;
+      border: none;
+      border-bottom: 3px solid #ff8c42;
+    }
+
+    .table-modern tbody tr {
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.02);
+      transition: 0.2s;
+    }
+
+    .table-modern tbody tr:hover {
+      background: #fff9f2;
+      box-shadow: 0 12px 24px -8px rgba(255, 140, 66, 0.2);
+      transform: scale(1.003);
+    }
+
+    .table-modern td {
+      padding: 18px 16px;
+      vertical-align: middle;
+      border: none;
+      color: #2b3d5c;
+      font-weight: 500;
+    }
+
+    .table-modern td:first-child {
+      border-radius: 20px 0 0 20px;
+    }
+
+    .table-modern td:last-child {
+      border-radius: 0 20px 20px 0;
+    }
+
+    /* Badge sexe */
+    .badge-sex {
+      background: #ff8c4215;
+      color: #ff8c42;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      border: 1px solid #ff8c4250;
+      display: inline-block;
+    }
+
+    /* Formulaire inline d'édition (plus compact) */
+    .edit-form {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      background: #f8fafd;
+      padding: 8px 12px;
+      border-radius: 60px;
+      border: 1px solid #eaeef5;
+    }
+
+    .edit-input {
+      border: 1px solid #dde3ec;
+      border-radius: 30px;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      min-width: 80px;
+      background: white;
+    }
+
+    .edit-input:focus {
+      border-color: #ff8c42;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255,140,66,0.2);
+    }
+
+    .edit-select {
+      border: 1px solid #dde3ec;
+      border-radius: 30px;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      background: white;
+    }
+
+    .btn-edit-submit {
+      background: #ff8c42;
+      border: none;
+      border-radius: 40px;
+      padding: 8px 18px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: 0.1s;
+    }
+
+    .btn-edit-submit:hover {
+      background: #e96e00;
+    }
+
+    .btn-delete {
+      background: #ffe8e8;
+      color: #d14545;
+      border-radius: 40px;
+      padding: 8px 18px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid #ffb3b3;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.1s;
+      margin-left: 5px;
+    }
+
+    .btn-delete:hover {
+      background: #d14545;
+      color: white;
+      border-color: #d14545;
+    }
+
+    /* petits ajustements */
+    .text-muted-small {
+      font-size: 0.75rem;
+      color: #9aa9bb;
+    }
+
+    footer {
+      margin-top: 30px;
+      text-align: right;
+      color: #abb9cc;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-custom">
+  <!-- Header avec bouton retour dashboard (exigé) -->
+  <div class="header-actions">
+    <h3><i class="fas fa-users" style="color: #ff8c42; margin-right: 10px;"></i> Gestion des Patients</h3>
+    <a href="/secretaire/dashboard" class="btn-dashboard">
+      <i class="fas fa-arrow-left"></i> Retour au dashboard
+    </a>
+  </div>
+
+  <!-- Formulaire d'ajout patient (backend totalement inchangé) -->
+  <div class="form-card">
+    <h4><i class="fas fa-plus-circle"></i> Ajouter un nouveau patient</h4>
+    <form action="/api/secretaire/patient/add" method="POST">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <label for="prenom" class="form-label"><i class="far fa-user" style="margin-right: 6px; color:#ff8c42;"></i>Prénom</label>
+          <input type="text" class="form-control" id="prenom" name="prenom" placeholder="ex: Pape Ibrahima" required>
+        </div>
+        <div class="col-md-6">
+          <label for="nom" class="form-label"><i class="far fa-user" style="margin-right: 6px; color:#ff8c42;"></i>Nom</label>
+          <input type="text" class="form-control" id="nom" name="nom" placeholder="ex: MBAYE" required>
+        </div>
+        <div class="col-md-3">
+          <label for="age" class="form-label"><i class="fas fa-birthday-cake" style="margin-right: 6px; color:#ff8c42;"></i>Âge</label>
+          <input type="number" class="form-control" id="age" name="age" placeholder="ans">
+        </div>
+        <div class="col-md-4">
+          <label for="tel" class="form-label"><i class="fas fa-phone-alt" style="margin-right: 6px; color:#ff8c42;"></i>Téléphone</label>
+          <input type="text" class="form-control" id="tel" name="tel" placeholder="+221 7X XXX XX XX">
+        </div>
+        <div class="col-md-3">
+          <label for="sexe" class="form-label"><i class="fas fa-venus-mars" style="margin-right: 6px; color:#ff8c42;"></i>Sexe</label>
+          <select class="form-select" id="sexe" name="sexe" required>
+            <option value="Homme">Homme</option>
+            <option value="Femme">Femme</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="nationalite" class="form-label"><i class="fas fa-globe" style="margin-right: 6px; color:#ff8c42;"></i>Nationalité</label>
+          <input type="text" class="form-control" id="nationalite" name="nationalite" placeholder="Sénégalaise">
+        </div>
+      </div>
+      <div class="text-end mt-4">
+        <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Enregistrer patient</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Section recherche (intacte fonctionnellement) -->
+  <div class="search-section">
+    <div class="search-wrapper">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Rechercher par nom ou prénom...">
+    </div>
+    <span class="text-muted-small" id="patientCount"></span>
+  </div>
+
+  <!-- Tableau patients (backinchangé, seule la présentation change) -->
+  <table class="table-modern table">
+    <thead>
+      <tr>
+        <th>Prénom</th>
+        <th>Nom</th>
+        <th>Âge</th>
+        <th>Téléphone</th>
+        <th>Sexe</th>
+        <th>Nationalité</th>
+        <th style="min-width: 380px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="patientsTable"></tbody>
+  </table>
+  <footer>
+    <i class="fas fa-database" style="color: #ff8c42;"></i> Données sécurisées · mise à jour en temps réel
+  </footer>
+</div>
+
+<script>
+  let allPatients = [];
+
+  // Charger patients (strictement identique à l'original)
+  fetch('/api/secretaire/patients')
+    .then(res => res.json())
+    .then(data => {
+      allPatients = data;
+      renderTable(allPatients);
+      updateCounter(allPatients.length);
+    });
+
+  function renderTable(patients) {
+    const table = document.getElementById('patientsTable');
+    table.innerHTML = '';
+    patients.forEach(p => {
+      // On génère une ligne plus élégante mais avec les mêmes inputs backend
+      table.innerHTML += `
+        <tr>
+          <td><strong>${p.prenom}</strong></td>
+          <td><strong>${p.nom}</strong></td>
+          <td>${p.age || '<span class="text-muted">—</span>'}</td>
+          <td>${p.tel || '<span class="text-muted">—</span>'}</td>
+          <td><span class="badge-sex">${p.sexe}</span></td>
+          <td>${p.nationalite || '<span class="text-muted">—</span>'}</td>
+          <td>
+            <!-- Formulaire de modification inline (exacte même structure, mais habillée) -->
+            <form action="/api/secretaire/patient/edit/${p.idPatient}" method="POST" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+              <input type="text" name="prenom" value="${p.prenom}" class="edit-input" placeholder="Prénom" required>
+              <input type="text" name="nom" value="${p.nom}" class="edit-input" placeholder="Nom" required>
+              <input type="number" name="age" value="${p.age || ''}" class="edit-input" placeholder="Âge" style="width:70px;">
+              <input type="text" name="tel" value="${p.tel || ''}" class="edit-input" placeholder="Tél" style="width:100px;">
+              <select name="sexe" class="edit-select">
+                <option ${p.sexe==='Homme' ? 'selected' : ''}>Homme</option>
+                <option ${p.sexe==='Femme' ? 'selected' : ''}>Femme</option>
+              </select>
+              <input type="text" name="nationalite" value="${p.nationalite || ''}" class="edit-input" placeholder="Nat." style="width:100px;">
+              <button type="submit" class="btn-edit-submit"><i class="fas fa-check"></i> Modifier</button>
+            </form>
+            <a href="/api/secretaire/patient/delete/${p.idPatient}" class="btn-delete" onclick="return confirm('Supprimer ce patient ?');"><i class="fas fa-trash-alt"></i> Supprimer</a>
+          </td>
+        </tr>
+      `;
+    });
+    updateCounter(patients.length);
+  }
+
+  function updateCounter(nb) {
+    const span = document.getElementById('patientCount');
+    if (span) span.innerText = nb + ' patient(s) affiché(s)';
+  }
+
+  // Recherche en direct (strictement identique)
+  document.getElementById('searchInput').addEventListener('input', function() {
+    const value = this.value.toLowerCase();
+    const filtered = allPatients.filter(p => 
+      p.nom.toLowerCase().includes(value) || p.prenom.toLowerCase().includes(value)
+    );
+    renderTable(filtered);
+  });
+</script>
+<!-- Aucune modification du backend : endpoints inchangés -->
+</body>
+</html>
