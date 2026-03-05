@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // 🔴 REMPLACEZ PAR VOTRE URL NGROK :
 // ex: https://abc123.ngrok-free.app
-export const BASE_URL = 'https://8842-196-75-203-26.ngrok-free.app';
+export const BASE_URL = 'https://e93b-196-75-6-12.ngrok-free.app';
 
 // Récupère le token JWT stocké
 const getToken = async () => {
