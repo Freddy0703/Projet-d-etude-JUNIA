@@ -23,9 +23,21 @@ app.use(session({
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: '', 
+    password: '',
     database: 'hopital_db'
 });
+
+// Vérification de la connexion
+(async () => {
+    try {
+        const connection = await db.getConnection();
+        console.log('✅ Connexion à la base de données réussie');
+        connection.release();
+    } catch (err) {
+        console.error('❌ Erreur de connexion à la base de données :', err.message);
+    }
+})();
+
 
 app.use((req, res, next) => {
     res.set('Cache-Control', 'no-store');

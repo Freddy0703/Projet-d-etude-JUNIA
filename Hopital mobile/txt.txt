@@ -1,0 +1,64 @@
+C:\Users\HP\Desktop\Hopital mobile\
+├── backend/
+│   ├── uploads/
+│   │   └── default.png
+│   ├── config/
+│   │   └── db.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── patientController.js
+│   │   ├── dossierController.js
+│   │   ├── examenController.js
+│   │   └── utilisateurController.js
+│   ├── middlewares/
+│   │   ├── authMiddleware.js
+│   │   └── roleMiddleware.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── patientRoutes.js
+│   │   ├── dossierRoutes.js
+│   │   ├── examenRoutes.js
+│   │   └── utilisateurRoutes.js
+│   ├── .env
+│   ├── package.json
+│   └── server.js
+│
+├── frontend/                    ← React Native (Expo)
+│   ├── assets/
+│   │   ├── logo.png
+│   │   └── default.png
+│   ├── api/
+│   │   └── api.js
+│   ├── screens/
+│   │   ├── LoginScreen.js
+│   │   ├── admin/
+│   │   │   ├── AdminDashboard.js
+│   │   │   ├── AdminPatients.js
+│   │   │   ├── AdminUtilisateurs.js
+│   │   │   ├── AdminDossiers.js
+│   │   │   └── AdminHistorique.js
+│   │   ├── secretaire/
+│   │   │   ├── SecretaireDashboard.js
+│   │   │   ├── SecretairePatients.js
+│   │   │   └── SecretaireMedecins.js
+│   │   ├── medecin/
+│   │   │   ├── MedecinDashboard.js
+│   │   │   ├── MedecinPatients.js
+│   │   │   ├── MedecinDossiers.js
+│   │   │   └── MedecinExamens.js
+│   │   └── shared/
+│   │       ├── ProfilScreen.js
+│   │       └── ParametresScreen.js
+│   ├── navigation/
+│   │   ├── AdminNavigator.js
+│   │   ├── SecretaireNavigator.js
+│   │   └── MedecinNavigator.js
+│   ├── components/
+│   │   ├── Header.js
+│   │   ├── BottomNav.js
+│   │   ├── Drawer.js
+│   │   └── PatientCard.js
+│   ├── context/
+│   │   └── AuthContext.js
+│   ├── App.js
+│   └── package.json

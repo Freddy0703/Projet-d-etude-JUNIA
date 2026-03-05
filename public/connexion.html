@@ -1,179 +1,470 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Connexion · Élégance</title>
-    <!-- Bootstrap 5 (light version) + icônes + subtle background -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- Google Font pour une touche raffinée (optionnel, reste très léger) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
-    <style>
-        * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body {
-            background: linear-gradient(145deg, #f0f4fa 0%, #f8fafc 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            margin: 0;
-            padding: 1rem;
-        }
-        .card-glass {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 2.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0,0,0,0.02);
-            transition: all 0.2s ease;
-        }
-        .card-glass:hover {
-            box-shadow: 0 30px 60px -10px rgba(0, 20, 40, 0.2);
-        }
-        .form-control, .btn {
-            border-radius: 3rem;
-            padding: 0.85rem 1.5rem;
-            border: 1px solid rgba(0,0,0,0.06);
-            font-size: 1rem;
-        }
-        .form-control {
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(4px);
-            transition: 0.2s;
-        }
-        .form-control:focus {
-            background: #ffffff;
-            border-color: #86b9ff;
-            box-shadow: 0 0 0 0.25rem rgba(70, 130, 230, 0.15);
-        }
-        .btn-primary {
-            background: #1d2b3f;
-            border: none;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            padding: 0.9rem;
-            transition: 0.15s;
-        }
-        .btn-primary:hover {
-            background: #14212f;
-            transform: scale(1.01);
-        }
-        .input-group-icon {
-            position: relative;
-        }
-        .input-group-icon i {
-            position: absolute;
-            left: 1.2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #5b687c;
-            font-size: 1.2rem;
-            z-index: 4;
-            pointer-events: none;
-            opacity: 0.7;
-        }
-        .input-group-icon .form-control {
-            padding-left: 3rem;
-        }
-        label.form-label {
-            font-weight: 500;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #2d3a4f;
-            margin-bottom: 0.4rem;
-            margin-left: 0.6rem;
-        }
-        h2 {
-            font-weight: 600;
-            font-size: 2.2rem;
-            letter-spacing: -0.5px;
-            background: linear-gradient(130deg, #1f2a3f, #2f3e5a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1.2rem;
-        }
-        /* responsive fine-tuning */
-        @media (max-width: 480px) {
-            .card-glass { padding: 2rem 1.5rem !important; }
-            h2 { font-size: 1.9rem; }
-        }
-        .footer-links {
-            font-size: 0.9rem;
-            color: #4f5f73;
-        }
-        .footer-links a {
-            color: #1d2b3f;
-            text-decoration: none;
-            font-weight: 500;
-            border-bottom: 1px dotted transparent;
-            transition: border 0.2s;
-        }
-        .footer-links a:hover {
-            border-bottom-color: #1d2b3f;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion · Hôpital Moulay Abdellah</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      background: #ddeef9;
+      background-image:
+        radial-gradient(ellipse 60% 50% at 20% 10%, rgba(14,165,233,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 80% 90%, rgba(14,165,233,0.12) 0%, transparent 60%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 3rem 1rem 3rem;
+    }
+
+    /* ─── CARD ─── */
+    .card {
+      width: 100%;
+      max-width: 460px;
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 8px 40px rgba(14,165,233,0.13), 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid rgba(14,165,233,0.15);
+      overflow: hidden;
+    }
+
+    /* ─── DARK HEADER ─── */
+    .card-top {
+      background: linear-gradient(160deg, #0c1e35 0%, #1a3a5c 100%);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+    .card-top::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(14,165,233,0.5), transparent);
+    }
+
+    /* Logo ring */
+    .logo-ring {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 1.2rem;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 2px solid rgba(14,165,233,0.35);
+      box-shadow: 0 0 0 8px rgba(14,165,233,0.06), 0 0 40px rgba(14,165,233,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from { box-shadow: 0 0 0 8px rgba(14,165,233,0.05), 0 0 28px rgba(14,165,233,0.15); }
+      to   { box-shadow: 0 0 0 12px rgba(14,165,233,0.09), 0 0 50px rgba(14,165,233,0.28); }
+    }
+    .logo-ring img {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+    }
+
+    .card-top h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+    .card-top .badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #0EA5E9;
+      opacity: 0.9;
+    }
+
+    /* ─── FORM AREA ─── */
+    .card-body {
+      padding: 2rem 2rem 1.5rem;
+    }
+
+    .form-heading {
+      text-align: center;
+      margin-bottom: 1.6rem;
+    }
+    .form-heading h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 500;
+      color: #0c1e35;
+      margin-bottom: 0.25rem;
+    }
+    .form-heading p {
+      font-size: 0.82rem;
+      color: #8fa3b5;
+      font-weight: 300;
+    }
+
+    .sep {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.6rem;
+    }
+    .sep::before, .sep::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(14,165,233,0.2), transparent);
+    }
+    .sep-dot { width: 5px; height: 5px; border-radius: 50%; background: #0EA5E9; opacity: 0.45; }
+
+    /* Form fields */
+    .field { margin-bottom: 1.2rem; }
+    .field label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: #2a4a62;
+      margin-bottom: 0.5rem;
+    }
+    .field label span.dot {
+      display: inline-block;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #0EA5E9;
+      flex-shrink: 0;
+    }
+    .input-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-box .ico {
+      position: absolute;
+      left: 14px;
+      display: flex;
+      align-items: center;
+      color: #0EA5E9;
+      opacity: 0.6;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+    .input-box:focus-within .ico { opacity: 1; }
+    .input-box input {
+      width: 100%;
+      padding: 0.85rem 2.8rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      color: #1e3a52;
+      background: rgba(14,165,233,0.04);
+      border: 1.5px solid rgba(14,165,233,0.15);
+      border-radius: 11px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+    .input-box input::placeholder { color: #b0c4d4; font-size: 0.82rem; }
+    .input-box input:focus {
+      background: rgba(14,165,233,0.07);
+      border-color: #0EA5E9;
+      box-shadow: 0 0 0 3px rgba(14,165,233,0.1);
+    }
+    .eye {
+      position: absolute;
+      right: 13px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #9ab0c0;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      transition: color .2s;
+    }
+    .eye:hover { color: #0EA5E9; }
+
+    /* Forgot */
+    .forgot-link {
+      text-align: right;
+      margin-top: 0.35rem;
+      margin-bottom: 1.4rem;
+    }
+    .forgot-link a {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #0EA5E9;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: opacity .2s;
+    }
+    .forgot-link a:hover { opacity: 0.7; }
+
+    /* Remember */
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 1.6rem;
+    }
+    .remember input[type=checkbox] {
+      appearance: none;
+      width: 16px; height: 16px;
+      border: 1.5px solid rgba(14,165,233,0.3);
+      border-radius: 4px;
+      background: rgba(14,165,233,0.04);
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+      transition: all .2s;
+    }
+    .remember input:checked { background: #0EA5E9; border-color: #0EA5E9; }
+    .remember input:checked::after {
+      content: '';
+      position: absolute;
+      left: 3px; top: 1px;
+      width: 6px; height: 9px;
+      border: 2px solid #fff;
+      border-top: none; border-left: none;
+      transform: rotate(45deg);
+    }
+    .remember label { font-size: 0.82rem; color: #8fa3b5; cursor: pointer; }
+
+    /* Submit button */
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 0.95rem;
+      background: linear-gradient(135deg, #0284c7, #0EA5E9, #38bdf8);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      border: none;
+      border-radius: 11px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(14,165,233,0.35);
+      transition: transform .15s, box-shadow .2s, background .3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn:hover {
+      background: linear-gradient(135deg, #0c1e35, #1a3a5c);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(14,165,233,0.4);
+    }
+    .btn:active { transform: translateY(0); }
+
+    /* ─── INFO FOOTER ─── */
+    .card-foot {
+      background: rgba(14,165,233,0.04);
+      border-top: 1px solid rgba(14,165,233,0.1);
+      padding: 0.9rem 2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .card-foot svg { color: #0EA5E9; opacity: 0.6; flex-shrink: 0; margin-top: 1px; }
+    .card-foot p { font-size: 0.73rem; color: #8fa3b5; line-height: 1.6; }
+    .card-foot a { color: #0EA5E9; text-decoration: none; font-weight: 500; word-break: break-all; }
+    .card-foot a:hover { text-decoration: underline; }
+
+    /* ─── COPYRIGHT ─── */
+    .copy {
+      margin-top: 1.6rem;
+      text-align: center;
+    }
+    .copy p {
+      font-size: 0.74rem;
+      color: #7a96ae;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .copy p .dot { width: 3px; height: 3px; border-radius: 50%; background: #94a3b8; opacity: 0.5; }
+    .pill {
+      margin-top: 0.55rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(14,165,233,0.07);
+      border: 1px solid rgba(14,165,233,0.18);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #0EA5E9;
+    }
+    .pill::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container" style="max-width: 460px;">
-        <div class="card-glass p-4 p-md-5">
-            <!-- en-tête discret mais élégant -->
-            <div class="text-center mb-4">
-                <div class="d-inline-flex bg-white bg-opacity-40 p-3 rounded-5 mb-2 shadow-sm" style="backdrop-filter:blur(4px);">
-                    <i class="bi bi-shield-lock-fill fs-1" style="color:#1e2f47;"></i>
-                </div>
-                <h2 class="mt-2">Bienvenue à l'hopital <b>Moulay Abdellah</b></h2>
-                <p class="text-secondary-emphasis small">Accédez à votre espace sécurisé</p>
-            </div>
 
-            <!-- formulaire strictement identique en attributs : action="/connexion" method="POST" -->
-            <form action="/connexion" method="POST">
-                <!-- Champ email / login -->
-                <div class="mb-4">
-                    <label for="login" class="form-label">
-                        <i class="bi bi-envelope-fill me-1" style="font-size:0.8rem;"></i> Email
-                    </label>
-                    <div class="input-group-icon">
-                        <i class="bi bi-envelope-open"></i>
-                        <input type="text" class="form-control" id="login" name="login" placeholder="votremail@gmail.com" required>
-                    </div>
-                </div>
+  <div class="card">
 
-                <!-- Champ mot de passe -->
-                <div class="mb-4">
-                    <label for="password" class="form-label">
-                        <i class="bi bi-lock-fill me-1"></i> Mot de passe
-                    </label>
-                    <div class="input-group-icon">
-                        <i class="bi bi-key"></i>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
-                    </div>
-                </div>
+    <!-- HEADER / LOGO -->
+    <div class="card-top">
+      <div class="logo-ring">
+        <img src="../images/logo.png" alt="Logo Hôpital Moulay Abdellah">
+      </div>
+      <h1>Hôpital Moulay Abdellah</h1>
+      <div class="badge">Portail du Personnel</div>
+    </div>
 
-                <!-- petite option pour garder connexion (purement front) et mot de passe oublié -->
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="remember" style="border-radius:0.25rem;">
-                        <label class="form-check-label" for="remember" style="font-size:0.9rem;">Rester connecté</label>
-                    </div>
-                </div>
+    <!-- FORM -->
+    <div class="card-body">
 
-                <!-- bouton de connexion inchangé dans le name/action mais design extra -->
-                <button type="submit" class="btn btn-primary w-100 mb-4">
-                    <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
-                </button>
-            </form>
+      <div class="form-heading">
+        <h2>Connexion</h2>
+        <p>Accédez à votre espace sécurisé</p>
+      </div>
+
+      <div class="sep"><div class="sep-dot"></div></div>
+
+      <form action="/connexion" method="POST">
+
+        <!-- Email -->
+        <div class="field">
+          <label for="login">
+            <span class="dot"></span> Identifiant / Email
+          </label>
+          <div class="input-box">
+            <span class="ico">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </span>
+            <input type="text" id="login" name="login"
+              placeholder="administrateur_moulayeAbdellah@gmail.com"
+              autocomplete="username" required>
+          </div>
         </div>
 
-        <!-- petit crédit design (juste pour le plaisir) -->
-        <p class="text-center text-muted small mt-4 opacity-50" style="font-size:0.75rem;">
-            interface refondue · design réactif
-        </p>
+        <!-- Password -->
+        <div class="field">
+          <label for="password">
+            <span class="dot"></span> Mot de passe
+          </label>
+          <div class="input-box">
+            <span class="ico">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </span>
+            <input type="password" id="password" name="password"
+              placeholder="••••••••••••"
+              autocomplete="current-password" required>
+            <button type="button" class="eye" onclick="togglePwd()" aria-label="Voir le mot de passe">
+              <svg id="eye-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Forgot -->
+        <div class="forgot-link">
+          <a href="mailto:administrateur_moulayeAbdellah@gmail.com?subject=R%C3%A9initialisation%20mot%20de%20passe&body=Bonjour%2C%0A%0AJe%20souhaite%20r%C3%A9initialiser%20mon%20mot%20de%20passe.%0A%0AMerci.">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Mot de passe oublié ?
+          </a>
+        </div>
+
+        <!-- Remember -->
+        <div class="remember">
+          <input type="checkbox" id="remember" name="remember">
+          <label for="remember">Rester connecté sur cet appareil</label>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+          Se connecter
+        </button>
+
+      </form>
     </div>
+
+    <!-- INFO FOOTER -->
+    <div class="card-foot">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <p>
+        Accès réservé au personnel autorisé. Besoin d'aide ?
+        <a href="mailto:administrateur_moulayeAbdellah@gmail.com">administrateur_moulayeAbdellah@gmail.com</a>
+      </p>
+    </div>
+
+  </div>
+
+  <!-- COPYRIGHT -->
+  <div class="copy">
+    <p>
+      <span>© Mars 2026 · Hôpital Moulay Abdellah</span>
+      <span class="dot"></span>
+      <span>Tous droits réservés</span>
+      <span class="dot"></span>
+      <span>Temara, Maroc</span>
+    </p>
+    <div class="pill">Connexion sécurisée</div>
+  </div>
+
+  <script>
+    function togglePwd() {
+      const inp = document.getElementById('password');
+      const ico = document.getElementById('eye-ico');
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        ico.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
+      } else {
+        inp.type = 'password';
+        ico.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+      }
+    }
+  </script>
 
 </body>
 </html>
