@@ -54,3 +54,7 @@ VALUES ('', '', '',
         '$2y$10$1OwQLuhFkoW2oJ6T6k9vi.0Oy6ZVfyipTSaFA8k0bJ.43HMVVuODa', -- mot de passe : hopital123 --
         'Administrateur', 'Hors ligne', 'default.png');
 
+CREATE TABLE Maladie (
+    idMaladie INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(150) NOT NULL
+);

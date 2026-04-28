@@ -177,7 +177,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       transition: 0.2s;
       border: 1px solid #8fd2b2;
     }
@@ -187,6 +187,28 @@
       transform: scale(1.02);
       box-shadow: 0 8px 14px -6px #0b5e3b;
       color: white;
+    }
+
+    .btn-result {
+      background: #0dcaf0;
+      border: none;
+      border-radius: 40px;
+      padding: 0.4rem 1.4rem;
+      font-weight: 600;
+      color: #0a4a33;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      transition: 0.2s;
+      border: 1px solid #9fe6fa;
+    }
+
+    .btn-result:hover {
+      background: #0bb5d8;
+      transform: scale(1.02);
+      color: #064523;
     }
 
     .btn-update {
@@ -298,6 +320,28 @@
       color: #1e6e4b;
       border: 1px solid #5cb78c;
     }
+
+    .action-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .update-form {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .update-date-input {
+      border-radius: 40px;
+      border: 1px solid #bcddc9;
+      padding: 0.4rem 0.8rem;
+      background: white;
+      font-size: 0.85rem;
+    }
   </style>
 </head>
 <body>
@@ -318,11 +362,11 @@
       </div>
     </div>
 
-    <!-- Contexte patient (id) -->
+    <!-- Contexte patient (nom + id) -->
     <div class="patient-context">
       <i class="fa-regular fa-user-injured" style="color: #1a7f56; font-size: 1.6rem;"></i>
-      <span style="font-weight: 500;">Patient ID :</span>
-      <span class="patient-id-badge" id="patientIdDisplay">—</span>
+      <span style="font-weight: 500;">Patient :</span>
+      <span class="patient-id-badge" id="patientNameDisplay">Chargement...</span>
       <span style="color:#2b7355;"><i class="fa-regular fa-leaf"></i> Dossiers associés</span>
     </div>
 
@@ -333,7 +377,7 @@
           <tr>
             <th><i class="fa-regular fa-hashtag me-1"></i> ID Dossier</th>
             <th><i class="fa-regular fa-calendar"></i> Date de création</th>
-            <th><i class="fa-regular fa-flask"></i> Examens</th>
+            <th><i class="fa-regular fa-flask"></i> Examens & Résultats</th>
             <th class="text-center"><i class="fa-regular fa-gear"></i> Actions</th>
           </tr>
         </thead>
@@ -343,7 +387,7 @@
       </table>
     </div>
 
-    <!-- Formulaire d'ajout de dossier (refonte) -->
+    <!-- Formulaire d'ajout de dossier -->
     <div class="form-card">
       <h4><i class="fa-regular fa-plus-circle"></i> Créer un nouveau dossier</h4>
       <form action="/api/medecin/dossier/add" method="POST">
@@ -371,34 +415,61 @@
   <script>
     // === AUCUNE MODIFICATION BACKEND (juste l'habillage) ===
     const urlParams = new URLSearchParams(window.location.search);
-    const patientId = urlParams.get('patient') || '—';
+    const patientId = urlParams.get('patient');
     
-    // Afficher l'ID patient dans le badge
-    document.getElementById('patientIdDisplay').innerText = patientId;
     // Renseigner le champ caché du formulaire
     document.getElementById('idPatient').value = patientId;
 
     let allDossiers = [];
 
-    // Charger les dossiers depuis l'API (inchangée)
-    fetch('/api/medecin/dossiers/' + patientId)
-      .then(res => res.json())
-      .then(data => {
-        allDossiers = data;
-        renderTable(allDossiers);
-      })
-      .catch(err => {
-        console.warn('⚠️ API dossiers non disponible (backend intact) — affichage placeholder');
-        // Données fictives pour maintenir le visuel
-        allDossiers = [
-          { idDossier: 'DOS-2025-01', dateCreation: '2025-02-15' },
-          { idDossier: 'DOS-2025-03', dateCreation: '2025-03-01' },
-          { idDossier: 'DOS-2024-42', dateCreation: '2024-12-10' },
-        ];
-        renderTable(allDossiers);
-      });
+    // Charger infos patient
+    if (patientId) {
+      fetch('/api/medecin/patient/' + patientId)
+        .then(res => res.json())
+        .then(data => {
+          const patientDisplay = document.getElementById('patientNameDisplay');
+          if (data && (data.prenom || data.nom)) {
+            patientDisplay.innerHTML = `<i class="fa-regular fa-user me-1"></i> ${data.prenom || ''} ${data.nom || ''} <span style="font-weight:400;">(#${patientId})</span>`;
+          } else {
+            patientDisplay.innerText = `Patient ID : ${patientId}`;
+          }
+        })
+        .catch(err => {
+          console.warn('⚠️ Infos patient non disponibles', err);
+          document.getElementById('patientNameDisplay').innerHTML = `<i class="fa-regular fa-id-card"></i> ID : ${patientId}`;
+        });
+    } else {
+      document.getElementById('patientNameDisplay').innerText = '— Aucun patient sélectionné —';
+    }
 
-    // Fonction de rendu avec les boutons adaptés (actions exactes de l'original)
+    // Charger les dossiers du patient
+    if (patientId) {
+      fetch('/api/medecin/dossiers/' + patientId)
+        .then(res => res.json())
+        .then(data => {
+          allDossiers = data;
+          renderTable(allDossiers);
+        })
+        .catch(err => {
+          console.warn('⚠️ API dossiers non disponible (backend intact) — affichage placeholder');
+          allDossiers = [
+            { idDossier: 'DOS-2025-01', dateCreation: '2025-02-15' },
+            { idDossier: 'DOS-2025-03', dateCreation: '2025-03-01' },
+            { idDossier: 'DOS-2024-42', dateCreation: '2024-12-10' },
+          ];
+          renderTable(allDossiers);
+        });
+    } else {
+      renderTable([]);
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return '';
+      const d = new Date(dateString);
+      if (isNaN(d.getTime())) return dateString;
+      return d.toISOString().split('T')[0];
+    }
+
     function renderTable(dossiers) {
       const tbody = document.getElementById('dossiersTable');
       tbody.innerHTML = '';
@@ -412,34 +483,39 @@
         const idDossier = d.idDossier || '';
         const dateCreation = d.dateCreation || '';
 
-        // Construction rigoureuse des URLs (identique à l'original)
-        const voirExamensLink = `/medecin/examens/${idDossier}`;
+        // URLs identiques à l'original
+        const voirExamensLink = `/medecin/examens/${idDossier}?patient=${patientId}`;
+        const voirResultLink = `/medecin/dossier/result/${idDossier}`;
         const updateAction = `/api/medecin/dossier/update/${idDossier}`;
         const deleteLink = `/api/medecin/dossier/delete/${idDossier}`;
 
         const row = document.createElement('tr');
         row.innerHTML = `
           <td><span class="fw-bold" style="color: #176f47;">#${idDossier}</span></td>
-          <td><span class="badge-date"><i class="fa-regular fa-calendar-check me-1"></i>${dateCreation}</span></td>
+          <td><span class="badge-date"><i class="fa-regular fa-calendar-check me-1"></i>${formatDate(dateCreation)}</span></td>
           <td>
-            <a href="${voirExamensLink}" class="btn-examens">
-              <i class="fa-regular fa-microscope"></i> Voir Examens
-            </a>
+            <div class="d-flex gap-2 flex-wrap">
+              <a href="${voirExamensLink}" class="btn-examens">
+                <i class="fa-regular fa-microscope"></i> Voir Examens
+              </a>
+              <a href="${voirResultLink}" class="btn-result">
+                <i class="fa-regular fa-chart-line"></i> Voir Résultats
+              </a>
+            </div>
           </td>
           <td>
-            <div class="d-flex gap-2 flex-wrap justify-content-start">
-              <!-- Formulaire de mise à jour (méthode POST) -->
-              <form action="${updateAction}" method="POST" style="display:inline;">
-                <input type="date" name="dateCreation" value="${dateCreation}" class="d-inline" style="width:auto; max-width:140px; border-radius:40px; border:1px solid #bcddc9; padding:0.3rem 0.8rem;">
+            <div class="action-group">
+              <form action="${updateAction}" method="POST" class="update-form">
+                <input type="date" name="dateCreation" value="${formatDate(dateCreation)}" class="update-date-input">
                 <button type="submit" class="btn-update">
                   <i class="fa-regular fa-pen-to-square"></i> Mettre à jour
                 </button>
               </form>
-              <a href="${deleteLink}" class="btn-delete" onclick="return confirm('Supprimer ce dossier ?');">
+              <a href="${deleteLink}" class="btn-delete" onclick="return confirm('Supprimer définitivement ce dossier ?');">
                 <i class="fa-regular fa-trash-can"></i> Supprimer
               </a>
             </div>
-          </td>
+           </td>
         `;
         tbody.appendChild(row);
       });

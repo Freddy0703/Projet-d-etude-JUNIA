@@ -38,12 +38,13 @@ const db = mysql.createPool({
     }
 })();
 
-
+// Désactiver le cache
 app.use((req, res, next) => {
     res.set('Cache-Control', 'no-store');
     next();
 });
 
+// Middleware d’authentification
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
         return next();
@@ -51,18 +52,25 @@ function isAuthenticated(req, res, next) {
     res.redirect('/connexion');
 }
 
+// Routes principales
 const connexionRoutes = require('./routes/connexion')(db);
 const deconnexionRoutes = require('./routes/deconnexion');
 const adminRoutes = require('./routes/administrateur')(db);
+const medecinRoutes = require('./routes/medecin')(db);
+const secretaireRoutes = require('./routes/secretaire')(db);
 
 app.use('/connexion', connexionRoutes);
 app.use('/deconnexion', deconnexionRoutes);
 app.use('/', adminRoutes);
+app.use('/', medecinRoutes);
+app.use('/', secretaireRoutes);
 
+// Page d’accueil
 app.get('/', (req, res) => {
     res.redirect('/connexion');
 });
 
+// ---------------- ADMINISTRATEUR ----------------
 app.get('/administrateur/dashboard', isAuthenticated, (req, res) => {
     if (req.session.user.role === 'Administrateur') {
         res.sendFile(path.join(__dirname, 'administrateur/dashboard.html'));
@@ -71,14 +79,63 @@ app.get('/administrateur/dashboard', isAuthenticated, (req, res) => {
     }
 });
 
-app.get('/secretaire/dashboard', isAuthenticated, (req, res) => {
-    if (req.session.user.role === 'Secretaire') {
-        res.sendFile(path.join(__dirname, 'secretaire/dashboard.html'));
+app.get('/administrateur/parametres', isAuthenticated, (req, res) => {
+    if (req.session.user.role === 'Administrateur') {
+        res.sendFile(path.join(__dirname, 'administrateur/parametres.html'));
     } else {
         res.redirect('/connexion');
     }
 });
 
+app.get('/administrateur/utilisateurs', isAuthenticated, (req, res) => {
+    if (req.session.user.role === 'Administrateur') {
+        res.sendFile(path.join(__dirname, 'administrateur/utilisateurs.html'));
+    } else {
+        res.redirect('/connexion');
+    }
+});
+
+app.get('/administrateur/utilisateurs-list', isAuthenticated, (req, res) => {
+    if (req.session.user.role === 'Administrateur') {
+        res.sendFile(path.join(__dirname, 'administrateur/utilisateurs-list.html'));
+    } else {
+        res.redirect('/connexion');
+    }
+});
+
+app.get('/administrateur/patients', isAuthenticated, (req, res) => {
+    if (req.session.user.role === 'Administrateur') {
+        res.sendFile(path.join(__dirname, 'administrateur/patients.html'));
+    } else {
+        res.redirect('/connexion');
+    }
+});
+
+app.get('/administrateur/dossiers', isAuthenticated, (req, res) => {
+    if (req.session.user.role === 'Administrateur') {
+        res.sendFile(path.join(__dirname, 'administrateur/dossiers.html'));
+    } else {
+        res.redirect('/connexion');
+    }
+});
+
+app.get('/administrateur/examens/:idDossier', isAuthenticated, (req, res) => {
+    if (req.session.user.role === 'Administrateur') {
+        res.sendFile(path.join(__dirname, 'administrateur/examens.html'));
+    } else {
+        res.redirect('/connexion');
+    }
+});
+
+app.get('/administrateur/historique', isAuthenticated, (req, res) => {
+    if (req.session.user.role === 'Administrateur') {
+        res.sendFile(path.join(__dirname, 'administrateur/historique.html'));
+    } else {
+        res.redirect('/connexion');
+    }
+});
+
+// ---------------- MEDECIN ----------------
 app.get('/medecin/dashboard', isAuthenticated, (req, res) => {
     if (req.session.user.role === 'Medecin') {
         res.sendFile(path.join(__dirname, 'medecin/dashboard.html'));
@@ -87,159 +144,72 @@ app.get('/medecin/dashboard', isAuthenticated, (req, res) => {
     }
 });
 
-app.get('/administrateur/parametres', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Administrateur') {
-    res.sendFile(path.join(__dirname, 'administrateur/parametres.html'));
-  } else {
-    res.redirect('/connexion');
-  }
-});
-
-app.get('/administrateur/utilisateurs', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Administrateur') {
-    res.sendFile(path.join(__dirname, 'administrateur/utilisateurs.html'));
-  } else {
-    res.redirect('/connexion');
-  }
-});
-
-app.get('/administrateur/utilisateurs-list', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Administrateur') {
-    res.sendFile(path.join(__dirname, 'administrateur/utilisateurs-list.html'));
-  } else {
-    res.redirect('/connexion');
-  }
-});
-
-app.get('/administrateur/patients', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Administrateur') {
-    res.sendFile(path.join(__dirname, 'administrateur/patients.html'));
-  } else {
-    res.redirect('/connexion');
-  }
-});
-
-app.get('/administrateur/dossiers', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Administrateur') {
-    res.sendFile(path.join(__dirname, 'administrateur/dossiers.html'));
-  } else {
-    res.redirect('/connexion');
-  }
-});
-
-app.get('/administrateur/examens/:idDossier', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Administrateur') {
-    res.sendFile(path.join(__dirname, 'administrateur/examens.html'));
-  } else {
-    res.redirect('/connexion');
-  }
-});
-
-app.get('/administrateur/historique', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Administrateur') {
-    res.sendFile(path.join(__dirname, 'administrateur/historique.html'));
-  } else {
-    res.redirect('/connexion');
-  }
-});
-
-const medecinRoutes = require('./routes/medecin')(db);
-app.use('/', medecinRoutes);
-
-app.get('/medecin/dashboard', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Medecin') {
-    res.sendFile(path.join(__dirname, 'medecin/dashboard.html'));
-  } else {
-    res.redirect('/connexion');
-  }
-});
-
 app.get('/medecin/patients', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Medecin') {
-    res.sendFile(path.join(__dirname, 'medecin/patients.html'));
-  } else {
-    res.redirect('/connexion');
-  }
+    if (req.session.user.role === 'Medecin') {
+        res.sendFile(path.join(__dirname, 'medecin/patients.html'));
+    } else {
+        res.redirect('/connexion');
+    }
 });
 
 app.get('/medecin/dossiers', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Medecin') {
-    res.sendFile(path.join(__dirname, 'medecin/dossiers.html'));
-  } else {
-    res.redirect('/connexion');
-  }
+    if (req.session.user.role === 'Medecin') {
+        res.sendFile(path.join(__dirname, 'medecin/dossiers.html'));
+    } else {
+        res.redirect('/connexion');
+    }
 });
 
 app.get('/medecin/examens/:idDossier', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Medecin') {
-    res.sendFile(path.join(__dirname, 'medecin/examens.html'));
-  } else {
-    res.redirect('/connexion');
-  }
+    if (req.session.user.role === 'Medecin') {
+        res.sendFile(path.join(__dirname, 'medecin/examens.html'));
+    } else {
+        res.redirect('/connexion');
+    }
 });
 
 app.get('/medecin/parametres', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Medecin') {
-    res.sendFile(path.join(__dirname, 'medecin/parametres.html'));
-  } else {
-    res.redirect('/connexion');
-  }
+    if (req.session.user.role === 'Medecin') {
+        res.sendFile(path.join(__dirname, 'medecin/parametres.html'));
+    } else {
+        res.redirect('/connexion');
+    }
 });
 
-app.get('/medecin/dossiers', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Medecin') {
-    res.sendFile(path.join(__dirname, 'medecin/dossiers.html'));
-  } else {
-    res.redirect('/connexion');
-  }
-});
-
-app.get('/medecin/examens/:idDossier', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Medecin') {
-    res.sendFile(path.join(__dirname, 'medecin/examens.html'));
-  } else {
-    res.redirect('/connexion');
-  }
-});
-
-// Charger routes secrétaire
-const secretaireRoutes = require('./routes/secretaire')(db);
-app.use('/', secretaireRoutes);
-
-// Route pour afficher le dashboard secrétaire
+// ---------------- SECRETAIRE ----------------
 app.get('/secretaire/dashboard', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Secretaire') {
-    res.sendFile(path.join(__dirname, 'secretaire/dashboard.html'));
-  } else {
-    res.redirect('/connexion');
-  }
+    if (req.session.user.role === 'Secretaire') {
+        res.sendFile(path.join(__dirname, 'secretaire/dashboard.html'));
+    } else {
+        res.redirect('/connexion');
+    }
 });
-
 
 app.get('/secretaire/patients', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Secretaire') {
-    res.sendFile(path.join(__dirname, 'secretaire/patients.html'));
-  } else {
-    res.redirect('/connexion');
-  }
+    if (req.session.user.role === 'Secretaire') {
+        res.sendFile(path.join(__dirname, 'secretaire/patients.html'));
+    } else {
+        res.redirect('/connexion');
+    }
 });
 
 app.get('/secretaire/medecins', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Secretaire') {
-    res.sendFile(path.join(__dirname, 'secretaire/medecins.html'));
-  } else {
-    res.redirect('/connexion');
-  }
+    if (req.session.user.role === 'Secretaire') {
+        res.sendFile(path.join(__dirname, 'secretaire/medecins.html'));
+    } else {
+        res.redirect('/connexion');
+    }
 });
 
 app.get('/secretaire/parametres', isAuthenticated, (req, res) => {
-  if (req.session.user.role === 'Secretaire') {
-    res.sendFile(path.join(__dirname, 'secretaire/parametres.html'));
-  } else {
-    res.redirect('/connexion');
-  }
+    if (req.session.user.role === 'Secretaire') {
+        res.sendFile(path.join(__dirname, 'secretaire/parametres.html'));
+    } else {
+        res.redirect('/connexion');
+    }
 });
 
+// ---------------- LANCEMENT SERVEUR ----------------
 app.listen(PORT, () => {
-    console.log(`Serveur démarré sur http://localhost:${PORT}`);
+    console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
 });

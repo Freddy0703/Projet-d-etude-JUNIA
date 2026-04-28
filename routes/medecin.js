@@ -36,7 +36,6 @@ module.exports = (db) => {
       const [patients] = await db.query("SELECT COUNT(*) AS totalPatients FROM Patient");
       const [dossiers] = await db.query("SELECT COUNT(*) AS totalDossiers FROM Dossier");
       const [examens] = await db.query("SELECT COUNT(*) AS totalExamens FROM Examen");
-
       const [hommes] = await db.query("SELECT COUNT(*) AS hommes FROM Patient WHERE sexe='Homme'");
       const [femmes] = await db.query("SELECT COUNT(*) AS femmes FROM Patient WHERE sexe='Femme'");
 
@@ -55,7 +54,10 @@ module.exports = (db) => {
           hommes: hommes[0].hommes,
           femmes: femmes[0].femmes
         },
-        lastPatients: lastPatients
+        lastPatients: lastPatients.map(p => ({
+          ...p,
+          dateCreation: p.dateCreation ? new Date(p.dateCreation).toISOString().split('T')[0] : null
+        }))
       });
     } catch (err) {
       console.error(err);
@@ -74,34 +76,30 @@ module.exports = (db) => {
     }
   });
 
-  // ---------------- DOSSIERS ----------------
-  // Tous les dossiers
-  router.get('/api/medecin/dossiers', async (req, res) => {
+  router.get('/api/medecin/patient/:idPatient', async (req, res) => {
     try {
-      const [rows] = await db.query(`
-        SELECT Dossier.idDossier, Dossier.dateCreation, Patient.nom, Patient.prenom
-        FROM Dossier
-        INNER JOIN Patient ON Dossier.idPatient = Patient.idPatient
-      `);
-      res.json(rows);
+      const [rows] = await db.query("SELECT * FROM Patient WHERE idPatient=?", [req.params.idPatient]);
+      res.json(rows[0]);
     } catch (err) {
       console.error(err);
       res.status(500).send("Erreur serveur");
     }
   });
 
-  // Dossiers d’un patient
+  // ---------------- DOSSIERS ----------------
   router.get('/api/medecin/dossiers/:idPatient', async (req, res) => {
     try {
       const [rows] = await db.query("SELECT * FROM Dossier WHERE idPatient=?", [req.params.idPatient]);
-      res.json(rows);
+      res.json(rows.map(d => ({
+        ...d,
+        dateCreation: d.dateCreation ? new Date(d.dateCreation).toISOString().split('T')[0] : null
+      })));
     } catch (err) {
       console.error(err);
       res.status(500).send("Erreur serveur");
     }
   });
 
-  // Ajouter un dossier
   router.post('/api/medecin/dossier/add', async (req, res) => {
     try {
       const { idPatient, dateCreation } = req.body;
@@ -113,7 +111,6 @@ module.exports = (db) => {
     }
   });
 
-  // Mettre à jour un dossier
   router.post('/api/medecin/dossier/update/:idDossier', async (req, res) => {
     try {
       const { dateCreation } = req.body;
@@ -128,7 +125,6 @@ module.exports = (db) => {
     }
   });
 
-  // Supprimer un dossier
   router.get('/api/medecin/dossier/delete/:idDossier', async (req, res) => {
     try {
       const [rows] = await db.query("SELECT idPatient FROM Dossier WHERE idDossier=?", [req.params.idDossier]);
@@ -142,11 +138,29 @@ module.exports = (db) => {
     }
   });
 
+  // ---------------- MALADIES ----------------
+  router.get('/api/maladies', async (req, res) => {
+    try {
+      const [rows] = await db.query("SELECT * FROM Maladie");
+      res.json(rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Erreur serveur");
+    }
+  });
+
   // ---------------- EXAMENS ----------------
   router.get('/api/medecin/examens/:idDossier', async (req, res) => {
     try {
-      const [rows] = await db.query("SELECT idExamen, nom, dateResultat FROM Examen WHERE idDossier=?", [req.params.idDossier]);
-      res.json(rows);
+      const [rows] = await db.query(`
+        SELECT Examen.idExamen, Examen.nom, Examen.dateResultat, Maladie.nom AS maladie
+        FROM Examen
+        LEFT JOIN Maladie ON Examen.idMaladie = Maladie.idMaladie
+        WHERE Examen.idDossier=?`, [req.params.idDossier]);
+      res.json(rows.map(e => ({
+        ...e,
+        dateResultat: e.dateResultat ? new Date(e.dateResultat).toISOString().split('T')[0] : null
+      })));
     } catch (err) {
       console.error(err);
       res.status(500).send("Erreur serveur");
@@ -155,8 +169,8 @@ module.exports = (db) => {
 
   router.post('/api/medecin/examen/add', async (req, res) => {
     try {
-      const { nom, dateResultat, idDossier } = req.body;
-      await db.query("INSERT INTO Examen (nom, dateResultat, idDossier) VALUES (?, ?, ?)", [nom, dateResultat, idDossier]);
+      const { nom, dateResultat, idDossier, idMaladie } = req.body;
+      await db.query("INSERT INTO Examen (nom, dateResultat, idDossier, idMaladie) VALUES (?, ?, ?, ?)", [nom, dateResultat, idDossier, idMaladie]);
       res.redirect('/medecin/examens/' + idDossier);
     } catch (err) {
       console.error(err);
@@ -166,8 +180,8 @@ module.exports = (db) => {
 
   router.post('/api/medecin/examen/edit/:id', async (req, res) => {
     try {
-      const { nom, dateResultat, idDossier } = req.body;
-      await db.query("UPDATE Examen SET nom=?, dateResultat=? WHERE idExamen=?", [nom, dateResultat, req.params.id]);
+      const { nom, dateResultat, idDossier, idMaladie } = req.body;
+      await db.query("UPDATE Examen SET nom=?, dateResultat=?, idMaladie=? WHERE idExamen=?", [nom, dateResultat, idMaladie, req.params.id]);
       res.redirect('/medecin/examens/' + idDossier);
     } catch (err) {
       console.error(err);
@@ -194,7 +208,10 @@ module.exports = (db) => {
       const login = req.body.login || req.session.user.login;
       const photoProfil = req.file ? req.file.filename : (req.session.user.photoProfil || 'default.png');
 
-      await db.query("UPDATE Utilisateur SET prenom=?, nom=?, login=?, photoProfil=? WHERE idUser=?", [prenom, nom, login, photoProfil, req.session.user.id]);
+      await db.query(
+        "UPDATE Utilisateur SET prenom=?, nom=?, login=?, photoProfil=? WHERE idUser=?",
+        [prenom, nom, login, photoProfil, req.session.user.id]
+      );
 
       req.session.user.prenom = prenom;
       req.session.user.nom = nom;
@@ -208,22 +225,50 @@ module.exports = (db) => {
     }
   });
 
-    router.post('/api/medecin/change-password', async (req, res) => {
+  // ---------------- RÉSULTATS COMPLETS D’UN DOSSIER ----------------
+  router.get('/api/medecin/dossier/result/:idDossier', async (req, res) => {
+    try {
+      const [dossier] = await db.query(`
+        SELECT Dossier.idDossier, Dossier.dateCreation, Patient.nom, Patient.prenom, Patient.age, Patient.tel, Patient.sexe, Patient.nationalite
+        FROM Dossier
+        INNER JOIN Patient ON Dossier.idPatient = Patient.idPatient
+        WHERE Dossier.idDossier=?`, [req.params.idDossier]);
+
+      const [examens] = await db.query(`
+        SELECT Examen.idExamen, Examen.nom, Examen.dateResultat, Maladie.nom AS maladie
+        FROM Examen
+        LEFT JOIN Maladie ON Examen.idMaladie = Maladie.idMaladie
+        WHERE Examen.idDossier=?`, [req.params.idDossier]);
+
+      res.json({
+        dossier: {
+          ...dossier[0],
+          dateCreation: dossier[0].dateCreation ? new Date(dossier[0].dateCreation).toISOString().split('T')[0] : null
+        },
+        examens: examens.map(e => ({
+          ...e,
+          dateResultat: e.dateResultat ? new Date(e.dateResultat).toISOString().split('T')[0] : null
+        }))
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Erreur serveur");
+    }
+  });
+
+  // ---------------- CHANGEMENT MOT DE PASSE ----------------
+  router.post('/api/medecin/change-password', async (req, res) => {
     try {
       const { currentPassword, newPassword, confirmPassword } = req.body;
 
-      // Récupérer l'utilisateur connecté
       const [rows] = await db.query("SELECT * FROM Utilisateur WHERE idUser=?", [req.session.user.id]);
       const user = rows[0];
 
-      // Vérifier mot de passe actuel
       const match = await bcrypt.compare(currentPassword, user.password);
       if (!match) return res.send("Mot de passe actuel incorrect");
 
-      // Vérifier confirmation
       if (newPassword !== confirmPassword) return res.send("Les mots de passe ne correspondent pas");
 
-      // Hasher et mettre à jour
       const hashed = await bcrypt.hash(newPassword, 10);
       await db.query("UPDATE Utilisateur SET password=? WHERE idUser=?", [hashed, req.session.user.id]);
 
@@ -233,5 +278,7 @@ module.exports = (db) => {
       res.status(500).send("Erreur serveur");
     }
   });
+
+  // ---------------- FIN ----------------
   return router;
 };

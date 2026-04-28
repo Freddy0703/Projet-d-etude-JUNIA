@@ -395,192 +395,180 @@
   </style>
 </head>
 <body>
-
-  <div class="users-container">
-    <!-- En-tête avec nom de l'hôpital et boutons (en haut) -->
-    <div class="hospital-header">
-      <div class="brand">
-        <h1>Hôpital <span>Moulaye Abdellah</span></h1>
-        <div class="subtitle">
-          <i class="bi bi-people-fill"></i> Gestion des utilisateurs
-        </div>
-      </div>
-      <div class="action-buttons">
-        <a href="/administrateur/utilisateurs" class="btn-premium-outline">
-          <i class="bi bi-person-plus"></i> Nouvel utilisateur
-        </a>
-        <a href="/administrateur/dashboard" class="btn-premium-primary">
-          <i class="bi bi-speedometer2"></i> Dashboard
-        </a>
+<div class="users-container">
+  <!-- En-tête avec nom de l'hôpital et boutons (en haut) -->
+  <div class="hospital-header">
+    <div class="brand">
+      <h1>Hôpital <span>Moulaye Abdellah</span></h1>
+      <div class="subtitle">
+        <i class="bi bi-people-fill"></i> Gestion des utilisateurs
       </div>
     </div>
-
-    <!-- Carte principale -->
-    <div class="users-card">
-      <div class="card-header-custom">
-        <h2>
-          <i class="bi bi-grid-3x3-gap-fill"></i> Liste des utilisateurs
-        </h2>
-        <span class="user-count-badge" id="userCount">
-          <i class="bi bi-person"></i> <span id="countDisplay">0</span> inscrits
-        </span>
-      </div>
-
-      <!-- Section filtres (barre de recherche et filtre rôles) -->
-      <div class="filters-section">
-        <div class="search-wrapper">
-          <i class="bi bi-search"></i>
-          <input type="text" id="searchInput" placeholder="Rechercher par nom, prénom ou email...">
-        </div>
-        <div class="filter-wrapper">
-          <i class="bi bi-funnel"></i>
-          <select id="roleFilter">
-            <option value="">Tous les rôles</option>
-            <option value="Administrateur">Administrateur</option>
-            <option value="Secretaire">Secrétaire</option>
-            <option value="Medecin">Médecin</option>
-          </select>
-        </div>
-        <div class="reset-filters" id="resetFilters" title="Réinitialiser les filtres">
-          <i class="bi bi-arrow-repeat"></i>
-        </div>
-      </div>
-
-      <!-- Tableau des utilisateurs (responsive) -->
-      <div class="table-responsive">
-        <table class="table-modern">
-          <thead>
-            <tr>
-              <th>Photo</th>
-              <th>Prénom</th>
-              <th>Nom</th>
-              <th>Email / Login</th>
-              <th>Rôle</th>
-            </tr>
-          </thead>
-          <tbody id="usersTable">
-            <!-- Les données seront injectées ici par JS -->
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Footer avec stats et navigation -->
-      <div class="table-footer">
-        <div class="results-info" id="resultsInfo">
-          <i class="bi bi-check-circle me-1"></i> <span id="resultsCount">0</span> utilisateur(s) affiché(s)
-        </div>
-        <div class="btn-navigation">
-          <a href="/administrateur/utilisateurs" class="btn-premium-outline">
-            <i class="bi bi-arrow-left"></i> Formulaire d'inscription
-          </a>
-        </div>
-      </div>
+    <div class="action-buttons">
+      <a href="/administrateur/utilisateurs" class="btn-premium-outline">
+        <i class="bi bi-person-plus"></i> Nouvel utilisateur
+      </a>
+      <a href="/administrateur/dashboard" class="btn-premium-primary">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </a>
     </div>
   </div>
 
-  <script>
-    // ========== CODE BACKEND STRICTEMENT IDENTIQUE ==========
-    // Les noms de variables, l'API, les IDs sont inchangés.
-    // Seule la présentation a été refaite.
-    
-    let allUsers = [];
+  <!-- Carte principale -->
+  <div class="users-card">
+    <div class="card-header-custom">
+      <h2>
+        <i class="bi bi-grid-3x3-gap-fill"></i> Liste des utilisateurs
+      </h2>
+      <span class="user-count-badge" id="userCount">
+        <i class="bi bi-person"></i> <span id="countDisplay">0</span> inscrits
+      </span>
+    </div>
 
-    // Charger les utilisateurs depuis l'API (inchangé)
-    fetch('/api/admin/users')
-      .then(res => res.json())
-      .then(data => {
-        allUsers = data;
-        document.getElementById('countDisplay').innerText = allUsers.length;
-        renderTable(allUsers);
-      })
-      .catch(err => {
-        console.warn('Erreur backend (non modifiée) : ', err);
-        document.getElementById('usersTable').innerHTML = `
+    <!-- Section filtres -->
+    <div class="filters-section">
+      <div class="search-wrapper">
+        <i class="bi bi-search"></i>
+        <input type="text" id="searchInput" placeholder="Rechercher par nom, prénom ou email...">
+      </div>
+      <div class="filter-wrapper">
+        <i class="bi bi-funnel"></i>
+        <select id="roleFilter">
+          <option value="">Tous les rôles</option>
+          <option value="Administrateur">Administrateur</option>
+          <option value="Secretaire">Secrétaire</option>
+          <option value="Medecin">Médecin</option>
+        </select>
+      </div>
+      <div class="reset-filters" id="resetFilters" title="Réinitialiser les filtres">
+        <i class="bi bi-arrow-repeat"></i>
+      </div>
+    </div>
+
+    <!-- Tableau des utilisateurs -->
+    <div class="table-responsive">
+      <table class="table-modern">
+        <thead>
           <tr>
-            <td colspan="5" class="empty-state">
-              <i class="bi bi-exclamation-triangle"></i>
-              <p>Impossible de charger les utilisateurs</p>
-            </td>
+            <th>Photo</th>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Email / Login</th>
+            <th>Rôle</th>
+            <th>Actions</th>
           </tr>
-        `;
-      });
+        </thead>
+        <tbody id="usersTable">
+          <!-- Données injectées par JS -->
+        </tbody>
+      </table>
+    </div>
 
-    // Fonction pour afficher le tableau filtré (inchangée dans la logique, mais présentation améliorée)
-    function renderTable(users) {
-      const table = document.getElementById('usersTable');
-      const resultsCount = document.getElementById('resultsCount');
-      
-      if (!users || users.length === 0) {
-        table.innerHTML = `
-          <tr>
-            <td colspan="5" class="empty-state">
-              <i class="bi bi-inbox"></i>
-              <p>Aucun utilisateur trouvé</p>
-            </td>
-          </tr>
-        `;
-        resultsCount.innerText = '0';
-        return;
-      }
+    <!-- Footer -->
+    <div class="table-footer">
+      <div class="results-info" id="resultsInfo">
+        <i class="bi bi-check-circle me-1"></i> <span id="resultsCount">0</span> utilisateur(s) affiché(s)
+      </div>
+      <div class="btn-navigation">
+        <a href="/administrateur/utilisateurs" class="btn-premium-outline">
+          <i class="bi bi-arrow-left"></i> Formulaire d'inscription
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
-      table.innerHTML = '';
-      users.forEach(u => {
-        // Déterminer la classe du badge selon le rôle
-        let roleClass = '';
-        if (u.role === 'Administrateur') roleClass = 'administrateur';
-        else if (u.role === 'Medecin') roleClass = 'medecin';
-        else if (u.role === 'Secretaire') roleClass = 'secretaire';
-        
-        // Gestion de la photo (inchangée)
-        const photoSrc = u.photoProfil ? `/images/${u.photoProfil}` : '/images/default.png';
-        
-        table.innerHTML += `
-          <tr>
-            <td>
-              <img src="${photoSrc}" alt="${u.prenom} ${u.nom}" class="user-avatar">
-            </td>
-            <td><strong>${u.prenom || ''}</strong></td>
-            <td>${u.nom || ''}</td>
-            <td>
-              <i class="bi bi-envelope me-1 text-secondary"></i>${u.login || ''}
-            </td>
-            <td>
-              <span class="role-badge ${roleClass}">${u.role || ''}</span>
-            </td>
-          </tr>
-        `;
-      });
-      
-      resultsCount.innerText = users.length;
-    }
+<script>
+  let allUsers = [];
 
-    // Filtrage par recherche et rôle (logique inchangée)
-    function applyFilters() {
-      const searchValue = document.getElementById('searchInput').value.toLowerCase().trim();
-      const roleValue = document.getElementById('roleFilter').value;
-
-      const filtered = allUsers.filter(u => {
-        const fullName = ((u.prenom || '') + ' ' + (u.nom || '')).toLowerCase();
-        const email = (u.login || '').toLowerCase();
-        // Recherche sur nom complet ou email
-        const matchesName = fullName.includes(searchValue) || email.includes(searchValue);
-        const matchesRole = roleValue ? u.role === roleValue : true;
-        return matchesName && matchesRole;
-      });
-
-      renderTable(filtered);
-    }
-
-    // Événements (inchangés)
-    document.getElementById('searchInput').addEventListener('input', applyFilters);
-    document.getElementById('roleFilter').addEventListener('change', applyFilters);
-    
-    // Réinitialisation des filtres
-    document.getElementById('resetFilters').addEventListener('click', function() {
-      document.getElementById('searchInput').value = '';
-      document.getElementById('roleFilter').value = '';
+  // Charger les utilisateurs
+  fetch('/api/admin/users')
+    .then(res => res.json())
+    .then(data => {
+      allUsers = data;
+      document.getElementById('countDisplay').innerText = allUsers.length;
       renderTable(allUsers);
+    })
+    .catch(err => {
+      console.warn('Erreur backend : ', err);
+      document.getElementById('usersTable').innerHTML = `
+        <tr>
+          <td colspan="6" class="empty-state">
+            <i class="bi bi-exclamation-triangle"></i>
+            <p>Impossible de charger les utilisateurs</p>
+          </td>
+        </tr>
+      `;
     });
-  </script>
+
+  function renderTable(users) {
+    const table = document.getElementById('usersTable');
+    const resultsCount = document.getElementById('resultsCount');
+
+    if (!users || users.length === 0) {
+      table.innerHTML = `
+        <tr>
+          <td colspan="6" class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <p>Aucun utilisateur trouvé</p>
+          </td>
+        </tr>
+      `;
+      resultsCount.innerText = '0';
+      return;
+    }
+
+    table.innerHTML = '';
+    users.forEach(u => {
+      let roleClass = '';
+      if (u.role === 'Administrateur') roleClass = 'administrateur';
+      else if (u.role === 'Medecin') roleClass = 'medecin';
+      else if (u.role === 'Secretaire') roleClass = 'secretaire';
+
+      const photoSrc = u.photoProfil ? `/images/${u.photoProfil}` : '/images/default.png';
+
+      table.innerHTML += `
+        <tr>
+          <td><img src="${photoSrc}" alt="${u.prenom} ${u.nom}" class="user-avatar"></td>
+          <td><strong>${u.prenom || ''}</strong></td>
+          <td>${u.nom || ''}</td>
+          <td><i class="bi bi-envelope me-1 text-secondary"></i>${u.login || ''}</td>
+          <td><span class="role-badge ${roleClass}">${u.role || ''}</span></td>
+          <td>
+            <a href="/api/admin/user/delete/${u.idUser}" class="btn btn-sm btn-danger">
+              <i class="bi bi-trash"></i> Supprimer
+            </a>
+          </td>
+        </tr>
+      `;
+    });
+
+    resultsCount.innerText = users.length;
+  }
+
+  function applyFilters() {
+    const searchValue = document.getElementById('searchInput').value.toLowerCase().trim();
+    const roleValue = document.getElementById('roleFilter').value;
+
+    const filtered = allUsers.filter(u => {
+      const fullName = ((u.prenom || '') + ' ' + (u.nom || '')).toLowerCase();
+      const email = (u.login || '').toLowerCase();
+      const matchesName = fullName.includes(searchValue) || email.includes(searchValue);
+      const matchesRole = roleValue ? u.role === roleValue : true;
+      return matchesName && matchesRole;
+    });
+
+    renderTable(filtered);
+  }
+
+  document.getElementById('searchInput').addEventListener('input', applyFilters);
+  document.getElementById('roleFilter').addEventListener('change', applyFilters);
+  document.getElementById('resetFilters').addEventListener('click', function() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('roleFilter').value = '';
+    renderTable(allUsers);
+  });
+</script>
+
 </body>
 </html>
